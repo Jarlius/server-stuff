@@ -6,15 +6,17 @@
 	<title>Whom do you serve?</title>
 	
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
 </head>
 
 <body>
 	<div id="app">
 		{{ message }}
+		<router-view></router-view>
 	</div>
-	
-</body>
 
-<script src="./app.js"></script>
+	<script src="./views/test.view.js"></script>
+	<script src="./app.js"></script>
+</body>
 
 </html>
