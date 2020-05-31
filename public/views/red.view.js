@@ -1,7 +1,7 @@
-Vue.component('test2', {
+Vue.component('red', {
 	data() {
 		return {
-			text: "Test 2",
+			text: "Red player",
 		}
 	},
 	created() {
@@ -10,7 +10,7 @@ Vue.component('test2', {
 	template: `
 	<div class = "redboard">
 		{{ text }}
-		<button v-on:click="$root.redirect('/test1')">switch</button>
+		<button v-on:click="$root.redirect('/blue')">switch</button>
 	</div>
 	`
 });
