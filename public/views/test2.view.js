@@ -5,10 +5,10 @@ Vue.component('test2', {
 		}
 	},
 	created() {
-		console.log('test?');
+		console.log('red');
 	},
 	template: `
-	<div>
+	<div class = "redboard">
 		{{ text }}
 		<button v-on:click="$root.redirect('/test1')">switch</button>
 	</div>
