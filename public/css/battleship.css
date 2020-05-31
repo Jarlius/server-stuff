@@ -1,10 +1,49 @@
-div.blueboard {
+div.grid-container {
+	display: grid;
+}
+
+div.grid-container.origin {
+	position:absolute;
+	top:0; bottom:0; left:0;	
+	grid-template-columns: 110px auto;
+	width: 100%;
+}
+
+div.grid-container.gameboard {
+	grid-template-columns: auto auto;
+	padding: 10px;
+	width: max-content;
+	margin: auto;
+}
+div.grid-container.gameboard.blue {
 	background-color: #2196F3;
-	padding: 10px;
-	justify-content: center;
 }
-div.redboard {
+div.grid-container.gameboard.red {
 	background-color: #ff5050;
-	padding: 10px;
-	justify-content: center;
 }
+
+#blue-background {
+	background-color: powderblue;
+	text-align: center;
+	width: 100%;
+}
+#red-background {
+	background-color: powderred;
+	text-align: center;
+	width: 100%;
+}
+
+#sidebar {
+	background: grey;
+	padding: 20px;
+	color: white;
+	width: 70px;
+	text-align: center;
+}
+span.data {
+	color: black;
+	background-color: white;
+	padding: 5px;
+	display: inline;
+}
+
