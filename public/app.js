@@ -1,5 +1,7 @@
 const routes = [
-	{ path: '/', component: Vue.component('test') },
+	{ path: '/', redirect: '/test1' },
+	{ path: '/test1', component: Vue.component('test1') },
+	{ path: '/test2', component: Vue.component('test2') },
 ];
 
 // Docs: https://router.vuejs.org/guide
@@ -11,6 +13,12 @@ const router = new VueRouter({
 const app = new Vue({
 //	el: '#app',
 	router,
+	methods: {
+		redirect(target) {
+			// Used in the navigation
+			this.$router.push(target);
+		}
+	},
 	data: {
 		message: 'Hello Vue!'
 	}
