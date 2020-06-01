@@ -2,6 +2,7 @@ Vue.component('blue', {
 	data() {
 		return {
 			text: "Blue player",
+			dim: 9,
 		}
 	},
 	created() {
@@ -18,13 +19,14 @@ Vue.component('blue', {
 			Turn: <span id="turn" class="data">0</span>
 		</div>
 		<div class="grid-item" id="blue-background">
-			<h2>Battleship!</h2>
-			<div class="grid-container gameboard blue">
-				<div class="grid-item">{{ text }}</div>
-				<div class="grid-item">
-					<button v-on:click="$root.redirect('/red')">switch</button>
+			<h1>Battleship!</h1>
+			<h2>{{ text }}</h2>
+			<div class="grid-container gameboard blue" :style="'grid-template-columns: repeat(' + dim + ', auto);'">
+				<div v-for="n in dim*dim">
+					<div class="grid-item tile"></div>
 				</div>
 			</div>
+			<button v-on:click="$root.redirect('/red')">switch</button>
 		</div>
 	</div>`
 });
