@@ -1,11 +1,9 @@
-Vue.component('red', {
+Vue.component('route-battleship', {
 	data() {
 		return {
-			text: "Red player",
+			color: this.$route.params.color,
+			size: 9,
 		}
-	},
-	created() {
-		console.log('red');
 	},
 	template: `
 	<div class="grid-container origin">
@@ -17,12 +15,12 @@ Vue.component('red', {
 			5: <span id="s4" class="data">0</span><br><br><br>
 			Turn: <span id="turn" class="data">0</span>
 		</div>
-		<div class="grid-item" id="red-background">
-			<h2>Battleship!</h2>
-			<div class="grid-container gameboard red">
-				<div class="grid-item">{{ text }}</div>
-				<div class="grid-item">
-					<button v-on:click="$root.redirect('/blue')">switch</button>
+		<div class="grid-item" :id="color + '-background'">
+			<h1>Battleship!</h1>
+			<h2>{{ color }} player</h2>
+			<div :class="'grid-container gameboard '+color" :style="'grid-template-columns: repeat(' + size + ', auto);'">
+				<div v-for="n in size*size">
+					<div class="grid-item tile"></div>
 				</div>
 			</div>
 		</div>

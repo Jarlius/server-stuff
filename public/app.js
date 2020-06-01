@@ -1,7 +1,6 @@
 const routes = [
-	{ path: '/', redirect: '/blue' },
-	{ path: '/blue', component: Vue.component('blue') },
-	{ path: '/red', component: Vue.component('red') },
+	{ path: '/', redirect: '/battleship/blue' },
+	{ path: '/battleship/:color', component: Vue.component('route-battleship') },
 ];
 
 // Docs: https://router.vuejs.org/guide
