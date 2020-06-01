@@ -3,6 +3,8 @@ Vue.component('route-battleship', {
 		return {
 			color: this.$route.params.color,
 			size: 9,
+			ships: [0,0,0,0],
+			turn: 0,
 		}
 	},
 	methods: {
@@ -14,10 +16,10 @@ Vue.component('route-battleship', {
 	<div class="grid-container origin">
 		<div class="grid-item" id="sidebar">
 			Ships:<br><br>
-			2: <span id="s1" class="data">0</span><br><br>
-			3: <span id="s2" class="data">0</span><br><br>
-			4: <span id="s3" class="data">0</span><br><br>
-			5: <span id="s4" class="data">0</span><br><br><br>
+			<div v-for="n in 4">
+				{{ n+1 }}: <span class="data">{{ ships[n-1] }}</span><br><br>
+			</div>
+			<br>
 			Turn: <span id="turn" class="data">0</span>
 		</div>
 		<div class="grid-item" :id="color + '-background'">
