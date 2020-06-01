@@ -5,6 +5,11 @@ Vue.component('route-battleship', {
 			size: 9,
 		}
 	},
+	methods: {
+			print(msg) {
+					console.log(msg);
+			}
+	},
 	template: `
 	<div class="grid-container origin">
 		<div class="grid-item" id="sidebar">
@@ -20,7 +25,7 @@ Vue.component('route-battleship', {
 			<h2>{{ color }} player</h2>
 			<div :class="'grid-container gameboard '+color" :style="'grid-template-columns: repeat(' + size + ', auto);'">
 				<div v-for="n in size*size">
-					<div class="grid-item tile"></div>
+					<div class="grid-item tile" v-on:click="print(n)"></div>
 				</div>
 			</div>
 		</div>
