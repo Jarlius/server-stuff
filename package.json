@@ -3,6 +3,7 @@
 		"start": "node app/index.js"
 	},
 	"dependencies": {
+		"better-logging": "^4.3.0",
 		"express": "^4.17.1"
 	}
 }
