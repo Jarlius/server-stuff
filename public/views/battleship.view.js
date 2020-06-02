@@ -5,6 +5,8 @@ Vue.component('route-battleship', {
 			size: 9,
 			ships: [0,0,0,0],
 			turn: 0,
+			state: '',
+			show_board: false,
 		}
 	},
 	methods: {
@@ -22,6 +24,13 @@ Vue.component('route-battleship', {
 					});
 			}
 	},
+	created() {
+		fetch('/api/state')
+			.then(res => res.json())
+			.then(data => {
+				this.state = data.ans;
+			});
+	},
 	template: `
 	<div class="grid-container origin">
 		<div class="grid-item" id="sidebar">
@@ -35,11 +44,14 @@ Vue.component('route-battleship', {
 		<div class="grid-item" :id="color + '-background'">
 			<h1>Battleship!</h1>
 			<h2>{{ color }} player</h2>
-			<div :class="'grid-container gameboard '+color" :style="'grid-template-columns: repeat(' + size + ', auto);'">
+			<div v-if="show_board" :class="'grid-container gameboard '+color" :style="'grid-template-columns: repeat(' + size + ', auto);'">
 				<div v-for="n in size*size">
 					<div class="grid-item tile" v-on:click="test(n)"></div>
 				</div>
 			</div>
+			<button v-if="state === 'start'" v-on:click="show_board = true">
+				Start game
+			</button>
 		</div>
 	</div>`
 });
