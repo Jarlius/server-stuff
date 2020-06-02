@@ -25,10 +25,11 @@ Vue.component('route-battleship', {
 		}
 	},
 	created() {
-		fetch('/api/state')
+		fetch(`/api/state/${this.color}`)
 			.then(res => res.json())
 			.then(data => {
-				this.state = data.ans;
+				this.state = data.state;
+				this.show_board = data.show;
 			});
 	},
 	template: `
