@@ -9,17 +9,17 @@ Vue.component('route-battleship', {
 		}
 	},
 	methods: {
-		test(msg) {
-			fetch('/api/test', {
+		tileClick(number) {
+			fetch('/api/tileclick', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({msg: msg})
+				body: JSON.stringify({number: number, color: this.color})
 			})
 			.then(res => res.json())
 			.then(data => {
-				console.log(data.ans);
+				this.state = data.state;
 			});
 		},
 		controlButton() {
@@ -47,7 +47,7 @@ Vue.component('route-battleship', {
 				break;
 			case 'blueturn':
 				return 'blue';
-			case 'bluened':
+			case 'blueend':
 				return 'blue';
 			case 'redturn':
 				return 'red';
@@ -79,7 +79,7 @@ Vue.component('route-battleship', {
 			<h2>{{ color }} player</h2>
 			<div v-if="currentBoard() !== 'none'" :class="'grid-container gameboard ' + currentBoard()" :style="'grid-template-columns: repeat(' + size + ', auto);'">
 				<div v-for="n in size*size">
-					<div class="grid-item tile" v-on:click="test(n)"></div>
+					<div class="grid-item tile" v-on:click="tileClick(n)"></div>
 				</div>
 			</div>
 			<button v-if="state === 'start'" v-on:click="controlButton()">

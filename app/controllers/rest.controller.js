@@ -14,9 +14,8 @@ router.post('/control', function(req, res) {
 	res.json(model.nextState(req.body.color));
 });
 
-router.post('/test', function(req, res) {
-	console.log(req.body.msg);
-	res.json({ans: req.body.msg});
+router.post('/tileclick', function(req, res) {
+	res.json(model.nextState(req.body.color));
 });
 
 module.exports = router;
