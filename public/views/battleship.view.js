@@ -8,8 +8,18 @@ Vue.component('route-battleship', {
 		}
 	},
 	methods: {
-			print(msg) {
-					console.log(msg);
+			test(msg) {
+					fetch('/api/test', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({msg: msg})
+					})
+					.then(res => res.json())
+					.then(data => {
+						console.log(data.ans);
+					});
 			}
 	},
 	template: `
@@ -27,7 +37,7 @@ Vue.component('route-battleship', {
 			<h2>{{ color }} player</h2>
 			<div :class="'grid-container gameboard '+color" :style="'grid-template-columns: repeat(' + size + ', auto);'">
 				<div v-for="n in size*size">
-					<div class="grid-item tile" v-on:click="print(n)"></div>
+					<div class="grid-item tile" v-on:click="test(n)"></div>
 				</div>
 			</div>
 		</div>
