@@ -6,7 +6,6 @@ Vue.component('route-battleship', {
 			ships: [0,0,0,0],
 			turn: 0,
 			state: '',
-			show_board: false,
 		}
 	},
 	methods: {
@@ -34,7 +33,6 @@ Vue.component('route-battleship', {
 			.then(res => res.json())
 			.then(data => {
 				this.state = data.state;
-				this.show_board = data.show;
 			});
 		},
 		currentBoard() {
@@ -64,7 +62,6 @@ Vue.component('route-battleship', {
 			.then(res => res.json())
 			.then(data => {
 				this.state = data.state;
-				this.show_board = data.show;
 			});
 	},
 	template: `

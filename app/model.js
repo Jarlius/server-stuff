@@ -20,5 +20,5 @@ exports.nextState = color => {
 	default:
 		break;
 	}
-	return {state: state, show: (color === 'blue')};
+	return {state: state};
 };
