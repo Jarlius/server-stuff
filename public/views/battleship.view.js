@@ -10,19 +10,19 @@ Vue.component('route-battleship', {
 		}
 	},
 	methods: {
-			test(msg) {
-					fetch('/api/test', {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json'
-						},
-						body: JSON.stringify({msg: msg})
-					})
-					.then(res => res.json())
-					.then(data => {
-						console.log(data.ans);
-					});
-			}
+		test(msg) {
+			fetch('/api/test', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({msg: msg})
+			})
+			.then(res => res.json())
+			.then(data => {
+				console.log(data.ans);
+			});
+		}
 	},
 	created() {
 		fetch('/api/state')
