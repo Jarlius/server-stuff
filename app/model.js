@@ -36,5 +36,16 @@ exports.nextState = color => {
 	default:
 		break;
 	}
-	return {state: state};
+	return state;
+};
+
+exports.tileClick = tile => {
+	if (state !== 'blueturn' && state !== 'redturn')
+		return {number: 0, color: 0};
+		
+	if (tile.color == 'blue')
+		blue_board.push(tile);
+	else
+		red_board.push(tile);
+	return {number: tile.number, color: 0};
 };

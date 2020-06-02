@@ -11,11 +11,12 @@ router.get('/state/:color', function(req, res) {
 });
 
 router.post('/control', function(req, res) {
-	res.json(model.nextState(req.body.color));
+	res.json({state: model.nextState(req.body.color)});
 });
 
 router.post('/tileclick', function(req, res) {
-	res.json(model.nextState(req.body.color));
+	tile = model.tileClick(req.body);
+	res.json({state: model.nextState(req.body.color), tile: tile});
 });
 
 module.exports = router;
