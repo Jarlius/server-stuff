@@ -1,10 +1,10 @@
+const model = require('../model.js');
 const express = require('express');
 const router = express.Router();
 
-var state = 'start';
-
 router.get('/state', function(req, res) {
-	res.json({ ans: state });
+	console.log(model.state);
+	res.json({ ans: model.state });
 });
 
 router.post('/test', function(req, res) {
