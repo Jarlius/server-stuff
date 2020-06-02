@@ -6,6 +6,10 @@ router.get('/state/:color', function(req, res) {
 	res.json(model.getState(req.params.color));
 });
 
+router.post('/control', function(req, res) {
+	res.json(model.nextState(req.body.color));
+});
+
 router.post('/test', function(req, res) {
 	console.log(req.body.msg);
 	res.json({ans: req.body.msg});

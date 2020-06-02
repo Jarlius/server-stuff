@@ -22,6 +22,20 @@ Vue.component('route-battleship', {
 			.then(data => {
 				console.log(data.ans);
 			});
+		},
+		controlButton() {
+			fetch('/api/control', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({color: this.color})
+			})
+			.then(res => res.json())
+			.then(data => {
+				this.state = data.state;
+				this.show_board = data.show;
+			});
 		}
 	},
 	created() {
@@ -50,7 +64,7 @@ Vue.component('route-battleship', {
 					<div class="grid-item tile" v-on:click="test(n)"></div>
 				</div>
 			</div>
-			<button v-if="state === 'start'" v-on:click="show_board = true">
+			<button v-if="state === 'start'" v-on:click="controlButton()">
 				Start game
 			</button>
 		</div>
