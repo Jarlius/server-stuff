@@ -36,6 +36,27 @@ Vue.component('route-battleship', {
 				this.state = data.state;
 				this.show_board = data.show;
 			});
+		},
+		currentBoard() {
+			switch (this.state) {
+			case 'blueprep':
+				if (this.color === 'blue')
+					return 'blue';
+				break;
+			case 'redprep':
+				if (this.color === 'red')
+					return 'red';
+				break;
+			case 'blueturn':
+				return 'blue';
+			case 'bluened':
+				return 'blue';
+			case 'redturn':
+				return 'red';
+			case 'redend':
+				return 'red';
+			}
+			return 'none';
 		}
 	},
 	created() {
@@ -59,7 +80,7 @@ Vue.component('route-battleship', {
 		<div class="grid-item" :id="color + '-background'">
 			<h1>Battleship!</h1>
 			<h2>{{ color }} player</h2>
-			<div v-if="show_board" :class="'grid-container gameboard '+color" :style="'grid-template-columns: repeat(' + size + ', auto);'">
+			<div v-if="currentBoard() !== 'none'" :class="'grid-container gameboard ' + currentBoard()" :style="'grid-template-columns: repeat(' + size + ', auto);'">
 				<div v-for="n in size*size">
 					<div class="grid-item tile" v-on:click="test(n)"></div>
 				</div>
