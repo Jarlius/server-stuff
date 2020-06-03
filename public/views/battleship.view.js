@@ -6,6 +6,7 @@ Vue.component('route-battleship', {
 			ships: [0,0,0,0],
 			turn: 0,
 			state: '',
+			board: [],
 		}
 	},
 	methods: {
@@ -63,6 +64,7 @@ Vue.component('route-battleship', {
 			.then(data => {
 				this.state = data.state;
 				this.size = data.size;
+				this.board = Array(data.size*data.size).fill(0);
 			});
 	},
 	template: `
@@ -80,7 +82,7 @@ Vue.component('route-battleship', {
 			<h2>{{ color }} player</h2>
 			<div v-if="currentBoard() !== 'none'" :class="'grid-container gameboard ' + currentBoard()" :style="'grid-template-columns: repeat(' + size + ', auto);'">
 				<div v-for="n in size*size">
-					<div class="grid-item tile" v-on:click="tileClick(n)"></div>
+					<div class="grid-item tile" v-on:click="tileClick(n)">{{ board[n-1] }}</div>
 				</div>
 			</div>
 			<button v-if="state === 'start'" v-on:click="controlButton()">
