@@ -20,7 +20,10 @@ router.post('/control', function(req, res) {
 
 router.post('/tileclick', function(req, res) {
 	tile = model.tileClick(req.body);
-	res.json({state: model.nextState(req.body.color),tile: tile});
+	res.json({
+		state: model.getState(),
+		tile: tile
+	});
 });
 
 module.exports = router;

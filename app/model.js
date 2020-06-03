@@ -20,7 +20,7 @@ exports.getBoards = color => {
 /**
  * Try to change the program state into its next state
  */
-exports.nextState = color => {
+nextState = color => {
 	switch (state) {
 	case 'start':
 //		state = 'blueprep';
@@ -43,16 +43,20 @@ exports.nextState = color => {
 	}
 	return state;
 };
+exports.nextState = nextState;
 
 exports.tileClick = tile => {
-	if (state !== 'blueturn' && state !== 'redturn')
-		return {number: 0, color: 0};
+	var new_tile = {number: tile.number, color: 1};
 	
-	const new_tile = {number: tile.number, color: 1};
-	
-	if (tile.color === 'blue')
+	if (state === 'blueturn' && tile.color === 'blue')
 		blue_board.push(new_tile);
-	else
+	else if (state === 'redturn' && tile.color === 'red')
 		red_board.push(new_tile);
+	else {
+		new_tile = {number: 0, color: 0};
+		if (state !== 'blueend' && state !== 'redend')
+			return new_tile;
+	}
+	nextState(tile.color);
 	return new_tile;
 };
