@@ -1,8 +1,12 @@
+const coordinate = require('./models/coordinate.model.js');
+
 var state = 'start';
 var size = 9;
 
 var blue_board = [];
 var red_board = [];
+
+var last_move = coordinate(0,size);
 
 /**
  * Read only get functions for model variables
