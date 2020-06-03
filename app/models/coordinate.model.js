@@ -7,16 +7,16 @@ function Coordinate(index, dim) {
 	this.col = index % dim;
 	this.equals = (other) => {
 		if ((this.row === other.row) && (this.col === other.col))
-			return true
+			return true;
 		else
-			return false
+			return false;
 	}
 	this.dist = (other) => {
 		if (this.row === other.row)
-			return Math.abs(this.col - other.col)
+			return Math.abs(this.col - other.col);
 		else if (this.col === other.col)
-			return Math.abs(this.row - other.row)
-		return 0
+			return Math.abs(this.row - other.row);
+		return 0;
 	}
 }
 
