@@ -1,4 +1,4 @@
-const coordinate = require('./models/coordinate.model.js');
+const Coordinate = require('./models/coordinate.model.js');
 
 var state = 'start';
 var size = 9;
@@ -6,7 +6,7 @@ var size = 9;
 var blue_board = [];
 var red_board = [];
 
-var last_move = coordinate(0,size);
+var last_move = Coordinate(0,size);
 
 /**
  * Read only get functions for model variables
@@ -27,7 +27,12 @@ exports.getBoards = color => {
 nextState = color => {
 	switch (state) {
 	case 'start':
-//		state = 'blueprep';
+		state = 'blueprep';
+		break;
+	case 'blueprep':
+		state = 'redprep';
+		break;
+	case 'redprep':
 		state = 'blueturn';
 		break;
 	case 'blueturn':
@@ -50,7 +55,7 @@ nextState = color => {
 exports.nextState = nextState;
 
 const prepare = tile => {
-	
+	return {number: tile.number, color: 1};
 }
 
 const takeTurn = tile => {
