@@ -7,7 +7,11 @@ const router = express.Router();
  * Format: { state, turn, size, blueboard[tile{n,color}], redboard[tile{n,color}] }
  */
 router.get('/state/:color', function(req, res) {
-	res.json({state: model.getState(), size: model.getSize()});
+	res.json({
+		state: model.getState(),
+		size: model.getSize(),
+		board: model.getBoard(req.body.color)
+	});
 });
 
 router.post('/control', function(req, res) {
@@ -16,7 +20,7 @@ router.post('/control', function(req, res) {
 
 router.post('/tileclick', function(req, res) {
 	tile = model.tileClick(req.body);
-	res.json({state: model.nextState(req.body.color), tile: tile});
+	res.json({state: model.nextState(req.body.color),tile: tile});
 });
 
 module.exports = router;

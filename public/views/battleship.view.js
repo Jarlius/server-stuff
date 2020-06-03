@@ -76,6 +76,9 @@ Vue.component('route-battleship', {
 				this.state = data.state;
 				this.size = data.size;
 				this.board = Array(data.size*data.size).fill(0);
+				for (var i=0; i < data.board.length; i++) {
+					this.board[data.board[i].number - 1] = data.board[i].color;
+				}
 			});
 	},
 	template: `
