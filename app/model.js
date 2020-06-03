@@ -9,11 +9,12 @@ var red_board = [];
  */
 exports.getState = () => {return state;};
 exports.getSize = () => {return size;};
-exports.getBoard = color => {
-	if (color === 'blue')
+exports.getBoards = color => {
+/*	if (color === 'blue')
 		return blue_board;
 	else
 		return red_board;
+*/	return {blue: blue_board, red: red_board};
 };
 
 /**
@@ -49,7 +50,7 @@ exports.tileClick = tile => {
 	
 	const new_tile = {number: tile.number, color: 1};
 	
-	if (tile.color == 'blue')
+	if (tile.color === 'blue')
 		blue_board.push(new_tile);
 	else
 		red_board.push(new_tile);

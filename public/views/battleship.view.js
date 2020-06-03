@@ -6,7 +6,8 @@ Vue.component('route-battleship', {
 			ships: [0,0,0,0],
 			turn: 0,
 			state: '',
-			board: [],
+			blue_board: [],
+			red_board: [],
 		}
 	},
 	methods: {
@@ -21,8 +22,12 @@ Vue.component('route-battleship', {
 			.then(res => res.json())
 			.then(data => {
 				this.state = data.state;
-				if (data.tile.number != 0)
-					this.board[data.tile.number-1] = data.tile.color;
+				if (data.tile.number != 0) {
+					if (this.currentBoard() === 'blue')
+						this.blue_board[data.tile.number-1] = data.tile.color;
+					else
+						this.red_board[data.tile.number-1] = data.tile.color;
+				}
 			});
 		},
 		controlButton() {
@@ -60,7 +65,13 @@ Vue.component('route-battleship', {
 			return 'none';
 		},
 		tileColor(number) {
-			switch(number) {
+			var color;
+			var board = this.currentBoard();
+			if (board === 'blue')
+				color = this.blue_board[number-1];
+			if (board === 'red')
+				color = this.red_board[number-1];
+			switch(color) {
 			case 0:
 				return 'beige';
 			case 1:
@@ -73,11 +84,16 @@ Vue.component('route-battleship', {
 		fetch(`/api/state/${this.color}`)
 			.then(res => res.json())
 			.then(data => {
+				console.log(data);
 				this.state = data.state;
 				this.size = data.size;
-				this.board = Array(data.size*data.size).fill(0);
-				for (var i=0; i < data.board.length; i++) {
-					this.board[data.board[i].number - 1] = data.board[i].color;
+				this.blue_board = Array(data.size*data.size).fill(0);
+				this.red_board = Array(data.size*data.size).fill(0);
+				for (var i=0; i < data.boards.blue.length; i++) {
+					this.blue_board[data.boards.blue[i].number - 1] = data.boards.blue[i].color;
+				}
+				for (var i=0; i < data.boards.red.length; i++) {
+					this.red_board[data.boards.red[i].number - 1] = data.boards.red[i].color;
 				}
 			});
 	},
@@ -96,7 +112,7 @@ Vue.component('route-battleship', {
 			<h2>{{ color }} player</h2>
 			<div v-if="currentBoard() !== 'none'" :class="'grid-container gameboard ' + currentBoard()" :style="'grid-template-columns: repeat(' + size + ', auto);'">
 				<div v-for="n in size*size">
-					<div :class="'grid-item tile ' + tileColor(board[n-1])" v-on:click="tileClick(n)"></div>
+					<div :class="'grid-item tile ' + tileColor(n)" v-on:click="tileClick(n)"></div>
 				</div>
 			</div>
 			<button v-if="state === 'start'" v-on:click="controlButton()">

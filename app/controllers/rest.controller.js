@@ -10,7 +10,7 @@ router.get('/state/:color', function(req, res) {
 	res.json({
 		state: model.getState(),
 		size: model.getSize(),
-		board: model.getBoard(req.body.color)
+		boards: model.getBoards(req.body.color)
 	});
 });
 
