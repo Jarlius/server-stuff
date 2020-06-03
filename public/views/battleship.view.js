@@ -23,10 +23,11 @@ Vue.component('route-battleship', {
 			.then(data => {
 				this.state = data.state;
 				if (data.tile.number != 0) {
+					// Using Vue.set forces all state updates, only way to trigger arrays
 					if (this.currentBoard() === 'blue')
-						this.blue_board[data.tile.number-1] = data.tile.color;
+						Vue.set(this.blue_board, data.tile.number-1, data.tile.color);
 					else
-						this.red_board[data.tile.number-1] = data.tile.color;
+						Vue.set(this.red_board, data.tile.number-1, data.tile.color);
 				}
 			});
 		},
@@ -110,13 +111,13 @@ Vue.component('route-battleship', {
 			<h1>Battleship!</h1>
 			<h2>{{ color }} player</h2>
 			<div
-				v-if="currentBoard() !== 'none'" 
-				:class="'grid-container gameboard ' + currentBoard()" 
+				v-if="currentBoard() !== 'none'"
+				:class="'grid-container gameboard ' + currentBoard()"
 				:style="'grid-template-columns: repeat(' + size + ', auto);'"
 			>
 				<div v-for="n in size*size">
-					<div 
-						:class="'grid-item tile ' + tileColor(n)" 
+					<div
+						:class="'grid-item tile ' + tileColor(n)"
 						v-on:click="tileClick(n)"
 					>
 					</div>
