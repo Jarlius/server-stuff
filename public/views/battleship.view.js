@@ -84,7 +84,6 @@ Vue.component('route-battleship', {
 		fetch(`/api/state/${this.color}`)
 			.then(res => res.json())
 			.then(data => {
-				console.log(data);
 				this.state = data.state;
 				this.size = data.size;
 				this.blue_board = Array(data.size*data.size).fill(0);
@@ -110,9 +109,17 @@ Vue.component('route-battleship', {
 		<div class="grid-item" :id="color + '-background'">
 			<h1>Battleship!</h1>
 			<h2>{{ color }} player</h2>
-			<div v-if="currentBoard() !== 'none'" :class="'grid-container gameboard ' + currentBoard()" :style="'grid-template-columns: repeat(' + size + ', auto);'">
+			<div
+				v-if="currentBoard() !== 'none'" 
+				:class="'grid-container gameboard ' + currentBoard()" 
+				:style="'grid-template-columns: repeat(' + size + ', auto);'"
+			>
 				<div v-for="n in size*size">
-					<div :class="'grid-item tile ' + tileColor(n)" v-on:click="tileClick(n)"></div>
+					<div 
+						:class="'grid-item tile ' + tileColor(n)" 
+						v-on:click="tileClick(n)"
+					>
+					</div>
 				</div>
 			</div>
 			<button v-if="state === 'start'" v-on:click="controlButton()">
