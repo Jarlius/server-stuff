@@ -33,10 +33,15 @@ div.grid-container.gameboard.red {
 }
 
 .tile {
-	background-color: beige;
 	border: 1px solid black;
 	width: 50px;
 	height: 50px;
+}
+.tile.beige {
+	background-color: beige;
+}
+.tile.green {
+	background-color: green;
 }
 
 #sidebar {

@@ -21,6 +21,8 @@ Vue.component('route-battleship', {
 			.then(res => res.json())
 			.then(data => {
 				this.state = data.state;
+				if (data.tile.number != 0)
+					this.board[data.tile.number-1] = data.tile.color;
 			});
 		},
 		controlButton() {
@@ -56,6 +58,15 @@ Vue.component('route-battleship', {
 				return 'red';
 			}
 			return 'none';
+		},
+		tileColor(number) {
+			switch(number) {
+			case 0:
+				return 'beige';
+			case 1:
+				return 'green';
+			}
+			return '';
 		}
 	},
 	created() {
@@ -82,7 +93,7 @@ Vue.component('route-battleship', {
 			<h2>{{ color }} player</h2>
 			<div v-if="currentBoard() !== 'none'" :class="'grid-container gameboard ' + currentBoard()" :style="'grid-template-columns: repeat(' + size + ', auto);'">
 				<div v-for="n in size*size">
-					<div class="grid-item tile" v-on:click="tileClick(n)">{{ board[n-1] }}</div>
+					<div :class="'grid-item tile ' + tileColor(board[n-1])" v-on:click="tileClick(n)"></div>
 				</div>
 			</div>
 			<button v-if="state === 'start'" v-on:click="controlButton()">

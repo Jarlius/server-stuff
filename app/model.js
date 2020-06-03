@@ -45,5 +45,5 @@ exports.tileClick = tile => {
 		blue_board.push(tile);
 	else
 		red_board.push(tile);
-	return {number: tile.number, color: 0};
+	return {number: tile.number, color: 1};
 };
