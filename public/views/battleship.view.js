@@ -62,6 +62,7 @@ Vue.component('route-battleship', {
 			.then(res => res.json())
 			.then(data => {
 				this.state = data.state;
+				this.size = data.size;
 			});
 	},
 	template: `

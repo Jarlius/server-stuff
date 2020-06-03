@@ -1,16 +1,14 @@
 var state = 'start';
+var size = 9;
 
 var blue_board = [];
 var red_board = [];
 
 /**
- * Get the state of the battleship model, and whether the player should show the board
+ * Read only get functions for model variables
  */
-exports.getState = color => {
-	return {state: state, show: 
-		(state === 'start')
-	};
-};
+exports.getState = () => {return state;};
+exports.getSize = () => {return size;};
 
 /**
  * Try to change the program state into its next state
