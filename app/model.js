@@ -49,7 +49,11 @@ nextState = color => {
 };
 exports.nextState = nextState;
 
-exports.tileClick = tile => {
+const prepare = tile => {
+	
+}
+
+const takeTurn = tile => {
 	var new_tile = {number: tile.number, color: 1};
 	
 	if (state === 'blueturn' && tile.color === 'blue')
@@ -63,4 +67,11 @@ exports.tileClick = tile => {
 	}
 	nextState(tile.color);
 	return new_tile;
+}
+
+exports.tileClick = tile => {
+	if (state === 'blueprep' || state === 'redprep')
+		return prepare(tile);
+	else
+		return takeTurn(tile);
 };
