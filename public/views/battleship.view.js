@@ -2,8 +2,8 @@ Vue.component('route-battleship', {
 	data() {
 		return {
 			color: this.$route.params.color,
-			size: 9,
-			ships: [0,0,0,0],
+			size: 0,
+			score: [],
 			turn: 0,
 			state: '',
 			blue_board: [],
@@ -91,6 +91,7 @@ Vue.component('route-battleship', {
 			.then(data => {
 				this.state = data.state;
 				this.size = data.size;
+				this.score = data.score;
 				this.blue_board = data.boards.blue;
 				this.red_board = data.boards.red;
 			});
@@ -99,8 +100,8 @@ Vue.component('route-battleship', {
 	<div class="grid-container origin">
 		<div class="grid-item" id="sidebar">
 			Ships:<br><br>
-			<div v-for="n in 4">
-				{{ n+1 }}: <span class="data">{{ ships[n-1] }}</span><br><br>
+			<div v-for="val in score">
+				{{ val[0] }}: <span class="data">{{ val[1] }}</span><br><br>
 			</div>
 			<br>
 			Turn: <span id="turn" class="data">0</span>
