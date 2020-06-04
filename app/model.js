@@ -98,6 +98,14 @@ const addShip = (ship,color) => {
 	ships[color].push(ship);
 	return true;
 };
+const delShip = (ship,color,playing) => {
+	for (var i in ships[color]) {
+		if (ship.equals(ships[color][i])) {
+			ships[color].splice(i,1);
+			// TODO trigger end of game if ships[color].length === 0 and playin === true
+		}
+	}
+};
 
 /**
  * Perform iterative task on line
@@ -119,18 +127,19 @@ const iterateLine = (c1,c2,color,other_color,assigning) => {
 			return false;
 	}
 	return ret_line;
-}
+};
 
 const prepare = tile => {
 	const move = new Coordinate(tile.number,size);
 	if (last_move.equals(new Coordinate(0,size))) {
-		const tile_occupied = badShip(new Ship(move,move),tile.color);
-		if (!tile_occupied) {
+		const ship = badShip(new Ship(move,move),tile.color);
+		if (!ship) {
 			last_move = move;
 			return [{number: tile.number, color: 1}];
 		} else {
-			// TODO delete ship
-			return [{number: tile.number, color: 0}];
+			delShip(ship,tile.color,false);
+			build_ships.push(ship.size);
+			return iterateLine(ship.c1,ship.c2,tile.color,0,true);
 		}
 	} else {
 		const tmp_move = last_move;
