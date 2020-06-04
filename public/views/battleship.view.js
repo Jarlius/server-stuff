@@ -77,6 +77,10 @@ Vue.component('route-battleship', {
 				return 'beige';
 			case 1:
 				return 'green';
+			case 2:
+				return 'orange';
+			case 3:
+				return 'black';
 			}
 			return '';
 		}

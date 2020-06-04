@@ -43,6 +43,12 @@ div.grid-container.gameboard.red {
 .tile.green {
 	background-color: green;
 }
+.tile.orange {
+	background-color: orange;
+}
+.tile.black {
+	background-color: black;
+}
 
 #sidebar {
 	background: grey;
