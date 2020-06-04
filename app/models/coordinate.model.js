@@ -3,7 +3,7 @@
  * Created with tile number and dimension
  */
 function Coordinate(index, dim) {
-	this.row = index / dim;
+	this.row = Math.floor(index / dim);
 	this.col = index % dim;
 	this.equals = (other) => {
 		if ((this.row === other.row) && (this.col === other.col))
