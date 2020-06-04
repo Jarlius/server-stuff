@@ -93,6 +93,28 @@ const addShip = (ship,color) => {
 	return true;
 };
 
+/**
+ * Perform iterative task on line
+ * If assigning, color tiles between c1 and c2 into other_color, on board type color
+ * If not assigning, do not color and return false if line not of a uniform color
+ */
+const iterateLine = (c1,c2,color,other_color,assigning) => {
+	var line_tile;
+	for (let i=0; i <= c1.dist(c2); i++) {
+		if (c1.row === c2.row)
+			line_tile = document.getElementById(color + c1.row + (Math.min(c1.col,c2.col)+i));
+		else
+			line_tile = document.getElementById(color + (Math.min(c1.row,c2.row)+i) + c1.col);
+		if (assigning)
+			line_tile.style.backgroundColor = other_color;
+		else {
+			if (line_tile.style.backgroundColor !== other_color)
+				return false;
+		}
+	}
+	return true;
+}
+
 const prepare = tile => {
 	const move = new Coordinate(tile.number,size);
 	if (last_move.equals(new Coordinate(0,size))) {
@@ -108,7 +130,6 @@ const prepare = tile => {
 		const tmp_move = last_move;
 		last_move = new Coordinate(0,size);
 		if (tmp_move.dist(move) !== 0 && addShip(new Ship(move,tmp_move),tile.color)) {
-			console.log(blue_ships);
 			// TODO paint the ship
 			return [{number: tmp_move.row*size + tmp_move.col, color: 0}];
 		} else
