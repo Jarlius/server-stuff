@@ -10,8 +10,9 @@ var build_ships = [];
 var blue_ships = [];
 var red_ships = [];
 
-var blue_board = Array(size*size).fill(0);
-var red_board = Array(size*size).fill(0);
+var board = [];
+board['blue'] = Array(size*size).fill(0);
+board['red'] = Array(size*size).fill(0);
 
 var last_move = new Coordinate(0,size);
 
@@ -22,10 +23,10 @@ exports.getState = () => {return state;};
 exports.getSize = () => {return size;};
 exports.getBoards = color => {
 /*	if (color === 'blue')
-		return blue_board;
+		return {blue: board['blue'], red: []};
 	else
-		return red_board;
-*/	return {blue: blue_board, red: red_board};
+		return {blue: [], red: board['red']};
+*/	return {blue: board['blue'], red: board['red']};
 };
 
 const buildInit = () => {
@@ -140,10 +141,8 @@ const prepare = tile => {
 const takeTurn = tile => {
 	var new_tile = [{number: tile.number, color: 1}];
 	
-	if (state === 'blueturn' && tile.color === 'blue')
-		blue_board[new_tile.number] = new_tile.color;
-	else if (state === 'redturn' && tile.color === 'red')
-		red_board[new_tile.number] = new_tile.color;
+	if (state === (tile.color + 'turn'))
+		board[tile.color][new_tile.number] = new_tile.color;
 	else {
 		new_tile = [];
 		if (state !== 'blueend' && state !== 'redend')
