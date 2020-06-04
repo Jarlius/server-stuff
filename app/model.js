@@ -1,8 +1,14 @@
 const Coordinate = require('./models/coordinate.model.js');
 const Ship = require('./models/ship.model.js');
 
+const size = 9;
+const ship_specs = [[2,1],[3,2],[4,1],[5,1]];
+
 var state = 'start';
-var size = 9;
+
+var build_ships = [];
+var blue_ships = [];
+var red_ships = [];
 
 var blue_board = [];
 var red_board = [];
@@ -22,12 +28,21 @@ exports.getBoards = color => {
 */	return {blue: blue_board, red: red_board};
 };
 
+const buildInit = () => {
+	for (var i in ship_specs) {
+		for (var j=0; j < ship_specs[i][1]; j++)
+			build_ships.push(ship_specs[i][0]);
+	}
+};
+
 /**
  * Try to change the program state into its next state
  */
 nextState = color => {
 	switch (state) {
 	case 'start':
+		buildInit();
+		console.log(build_ships);
 		state = 'blueprep';
 		break;
 	case 'blueprep':
