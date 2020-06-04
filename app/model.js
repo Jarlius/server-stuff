@@ -100,18 +100,20 @@ const addShip = (ship,color) => {
  * If not assigning, do not color and return false if line not of a uniform color
  */
 const iterateLine = (c1,c2,color,other_color,assigning) => {
+	var ret_line = [];
 	var index;
 	for (let i=0; i <= c1.dist(c2); i++) {
 		if (c1.row === c2.row)
 			index = c1.row*size + (Math.min(c1.col,c2.col)+i);
 		else
 			index = (Math.min(c1.row,c2.row)+i)*size + c1.col;
-		if (assigning)
+		if (assigning) {
 			board[color][index-1] = other_color;
-		else	if (board[color][index-1] !== other_color)
+			ret_line.push({number: index, color: other_color});
+		} else if (board[color][index-1] !== other_color)
 			return false;
 	}
-	return true;
+	return ret_line;
 }
 
 const prepare = tile => {
@@ -128,11 +130,9 @@ const prepare = tile => {
 	} else {
 		const tmp_move = last_move;
 		last_move = new Coordinate(0,size);
-		if (tmp_move.dist(move) !== 0 && addShip(new Ship(move,tmp_move),tile.color)) {
-			iterateLine(move,tmp_move,tile.color,1,true);
-			// TODO Send painted line to frontend
-			return [{number: tmp_move.row*size + tmp_move.col, color: 0}];
-		} else
+		if (tmp_move.dist(move) !== 0 && addShip(new Ship(move,tmp_move),tile.color))
+			return iterateLine(move,tmp_move,tile.color,1,true);
+		else
 			return [{number: tile.number, color: 0}];
 	}
 };
