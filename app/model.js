@@ -11,6 +11,10 @@ var ships = [];
 ships['blue'] = [];
 ships['red'] = [];
 
+var score = [];
+score['blue'] = [];
+score['red'] = [];
+
 var board = [];
 board['blue'] = Array(size*size).fill(0);
 board['red'] = Array(size*size).fill(0);
@@ -31,10 +35,11 @@ exports.getBoards = color => {
 };
 
 const buildInit = () => {
-	for (var i in ship_specs) {
+	for (var i in ship_specs)
 		for (var j=0; j < ship_specs[i][1]; j++)
 			build_ships.push(ship_specs[i][0]);
-	}
+	score['blue'] = ship_specs;
+	score['red'] = ship_specs;
 };
 
 /**
@@ -72,6 +77,15 @@ nextState = color => {
 exports.nextState = nextState;
 
 /**
+ * Change current score by 1/-1, when a ship is deleted/added
+ */
+const editScore = (color, length, increment) => {
+	for (var i in ship_specs)
+		if (ship_specs[i][0] === length)
+			score[color][i][1] += increment;
+};
+
+/**
  * Checks if a new ship will obstruct any old ship
  * Returns obstructing ship if bad, false if good
  */
@@ -98,7 +112,7 @@ const addShip = (ship,color) => {
 	}
 	if (!allowed_length)
 		return false;
-	// TODO relay information of constructed ship somehow to frontend
+	editScore(color, ship.size, -1);
 	ships[color].push(ship);
 	return true;
 };
@@ -110,6 +124,7 @@ const delShip = (ship,color,playing) => {
 	for (var i in ships[color]) {
 		if (ship.equals(ships[color][i])) {
 			ships[color].splice(i,1);
+			editScore(color, ship.size, 1);
 			// TODO trigger end of game if ships[color].length === 0 and playin === true
 		}
 	}
