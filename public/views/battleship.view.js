@@ -87,14 +87,8 @@ Vue.component('route-battleship', {
 			.then(data => {
 				this.state = data.state;
 				this.size = data.size;
-				this.blue_board = Array(data.size*data.size).fill(0);
-				this.red_board = Array(data.size*data.size).fill(0);
-				for (var i=0; i < data.boards.blue.length; i++) {
-					this.blue_board[data.boards.blue[i].number - 1] = data.boards.blue[i].color;
-				}
-				for (var i=0; i < data.boards.red.length; i++) {
-					this.red_board[data.boards.red[i].number - 1] = data.boards.red[i].color;
-				}
+				this.blue_board = data.boards.blue;
+				this.red_board = data.boards.red;
 			});
 	},
 	template: `
