@@ -26,6 +26,7 @@ var last_move = new Coordinate(0,size);
  */
 exports.getState = () => {return state;};
 exports.getSize = () => {return size;};
+exports.getScore = color => {return score[color];};
 exports.getBoards = color => {
 /*	if (color === 'blue')
 		return {blue: board['blue'], red: []};

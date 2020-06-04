@@ -10,6 +10,7 @@ router.get('/state/:color', function(req, res) {
 	res.json({
 		state: model.getState(),
 		size: model.getSize(),
+		score: model.getScore(req.body.color),
 		boards: model.getBoards(req.body.color)
 	});
 });
