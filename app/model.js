@@ -71,9 +71,16 @@ nextState = color => {
 };
 exports.nextState = nextState;
 
+/**
+ * Checks if a new ship will obstruct any old ship
+ * Returns obstructing ship if bad, false if good
+ */
 const badShip = (ship,color) => {
-	// TODO
-	return false;
+	var false_or_ship = false;
+	for (var i in ships[color])
+		if (ship.obstructs(ships[color][i]))
+			false_or_ship = ships[color][i];
+	return false_or_ship;
 };
 const addShip = (ship,color) => {
 	if (badShip(ship,color))
@@ -117,7 +124,7 @@ const iterateLine = (c1,c2,color,other_color,assigning) => {
 const prepare = tile => {
 	const move = new Coordinate(tile.number,size);
 	if (last_move.equals(new Coordinate(0,size))) {
-		const tile_occupied = badShip(Ship(move,move),tile.color);
+		const tile_occupied = badShip(new Ship(move,move),tile.color);
 		if (!tile_occupied) {
 			last_move = move;
 			return [{number: tile.number, color: 1}];
@@ -131,7 +138,7 @@ const prepare = tile => {
 		if (tmp_move.dist(move) !== 0 && addShip(new Ship(move,tmp_move),tile.color))
 			return iterateLine(move,tmp_move,tile.color,1,true);
 		else
-			return [{number: tile.number, color: 0}];
+			return [{number: tmp_move.row*size + tmp_move.col, color: 0}];
 	}
 };
 
