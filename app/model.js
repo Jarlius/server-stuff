@@ -7,8 +7,9 @@ const ship_specs = [[2,1],[3,2],[4,1],[5,1]];
 var state = 'start';
 
 var build_ships = [];
-var blue_ships = [];
-var red_ships = [];
+var ships = [];
+ships['blue'] = [];
+ships['red'] = [];
 
 var board = [];
 board['blue'] = Array(size*size).fill(0);
@@ -87,10 +88,7 @@ const addShip = (ship,color) => {
 	if (!allowed_length)
 		return false;
 	// TODO relay information of constructed ship somehow to frontend
-	if (color === 'blue')
-		blue_ships.push(ship);
-	else
-		red_ships.push(ship);
+	ships[color].push(ship);
 	return true;
 };
 
