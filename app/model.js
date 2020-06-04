@@ -42,7 +42,6 @@ nextState = color => {
 	switch (state) {
 	case 'start':
 		buildInit();
-		console.log(build_ships);
 		state = 'blueprep';
 		break;
 	case 'blueprep':
@@ -74,6 +73,25 @@ const badShip = (ship,color) => {
 	// TODO
 	return false;
 };
+const addShip = (ship,color) => {
+	if (badShip(ship,color))
+		return false;
+	var allowed_length = false;
+	for (let i=0; i < build_ships.length; i++) {
+		if (ship.size === build_ships[i]) {
+			build_ships.splice(i,1);
+			allowed_length = true;
+		}
+	}
+	if (!allowed_length)
+		return false;
+	// TODO relay information of constructed ship somehow to frontend
+	if (color === 'blue')
+		blue_ships.push(ship);
+	else
+		red_ships.push(ship);
+	return true;
+};
 
 const prepare = tile => {
 	const move = new Coordinate(tile.number,size);
@@ -89,7 +107,8 @@ const prepare = tile => {
 	} else {
 		const tmp_move = last_move;
 		last_move = new Coordinate(0,size);
-		if (tmp_move.dist(move) !== 0) { // && TODO check if created ship is valid
+		if (tmp_move.dist(move) !== 0 && addShip(new Ship(move,tmp_move),tile.color)) {
+			console.log(blue_ships);
 			// TODO paint the ship
 			return {number: tmp_move.row*size + tmp_move.col, color: 0};
 		} else
