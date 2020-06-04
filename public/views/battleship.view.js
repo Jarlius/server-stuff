@@ -22,12 +22,12 @@ Vue.component('route-battleship', {
 			.then(res => res.json())
 			.then(data => {
 				this.state = data.state;
-				if (data.tile.number != 0) {
+				for (var i in data.tiles) {
 					// Using Vue.set forces all state updates, only way to trigger arrays
 					if (this.currentBoard() === 'blue')
-						Vue.set(this.blue_board, data.tile.number-1, data.tile.color);
+						Vue.set(this.blue_board, data.tiles[i].number-1, data.tiles[i].color);
 					else
-						Vue.set(this.red_board, data.tile.number-1, data.tile.color);
+						Vue.set(this.red_board, data.tiles[i].number-1, data.tiles[i].color);
 				}
 			});
 		},

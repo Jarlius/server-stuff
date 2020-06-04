@@ -99,10 +99,10 @@ const prepare = tile => {
 		const tile_occupied = badShip(Ship(move,move),tile.color);
 		if (!tile_occupied) {
 			last_move = move;
-			return {number: tile.number, color: 1};
+			return [{number: tile.number, color: 1}];
 		} else {
 			// TODO delete ship
-			return {number: tile.number, color: 0};
+			return [{number: tile.number, color: 0}];
 		}
 	} else {
 		const tmp_move = last_move;
@@ -110,21 +110,21 @@ const prepare = tile => {
 		if (tmp_move.dist(move) !== 0 && addShip(new Ship(move,tmp_move),tile.color)) {
 			console.log(blue_ships);
 			// TODO paint the ship
-			return {number: tmp_move.row*size + tmp_move.col, color: 0};
+			return [{number: tmp_move.row*size + tmp_move.col, color: 0}];
 		} else
-			return {number: tile.number, color: 0};
+			return [{number: tile.number, color: 0}];
 	}
 };
 
 const takeTurn = tile => {
-	var new_tile = {number: tile.number, color: 1};
+	var new_tile = [{number: tile.number, color: 1}];
 	
 	if (state === 'blueturn' && tile.color === 'blue')
 		blue_board.push(new_tile);
 	else if (state === 'redturn' && tile.color === 'red')
 		red_board.push(new_tile);
 	else {
-		new_tile = {number: 0, color: 0};
+		new_tile = [];
 		if (state !== 'blueend' && state !== 'redend')
 			return new_tile;
 	}

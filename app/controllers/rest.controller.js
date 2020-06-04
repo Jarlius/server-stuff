@@ -19,10 +19,10 @@ router.post('/control', function(req, res) {
 });
 
 router.post('/tileclick', function(req, res) {
-	tile = model.tileClick(req.body);
+	tiles = model.tileClick(req.body);
 	res.json({
 		state: model.getState(),
-		tile: tile
+		tiles: tiles
 	});
 });
 
