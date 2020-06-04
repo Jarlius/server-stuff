@@ -82,6 +82,10 @@ const badShip = (ship,color) => {
 			false_or_ship = ships[color][i];
 	return false_or_ship;
 };
+/**
+ * Add a ship to the list of built ships
+ * Impossible if ship is bad or if the length is bad/already used
+ */
 const addShip = (ship,color) => {
 	if (badShip(ship,color))
 		return false;
@@ -98,6 +102,10 @@ const addShip = (ship,color) => {
 	ships[color].push(ship);
 	return true;
 };
+/**
+ * Detelete a target ship
+ * If not in preparation, check if end of game when 0 ships left
+ */
 const delShip = (ship,color,playing) => {
 	for (var i in ships[color]) {
 		if (ship.equals(ships[color][i])) {
@@ -129,6 +137,11 @@ const iterateLine = (c1,c2,color,other_color,assigning) => {
 	return ret_line;
 };
 
+/**
+ * Action when a tile is clicked during preparation
+ * if no green tile is present, create a green tile on empty tile, or delet a ship
+ * if green tile is present, try to create a ship, erase green tile if unsuccessful
+ */
 const prepare = tile => {
 	const move = new Coordinate(tile.number,size);
 	if (last_move.equals(new Coordinate(0,size))) {
