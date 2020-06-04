@@ -158,7 +158,7 @@ const prepare = tile => {
 		const tmp_move = last_move;
 		last_move = new Coordinate(0,size);
 		if (tmp_move.dist(move) !== 0 && addShip(new Ship(move,tmp_move),tile.color))
-			return iterateLine(move,tmp_move,tile.color,1,true);
+			return iterateLine(move,tmp_move,tile.color,3,true);
 		else
 			return [{number: tmp_move.row*size + tmp_move.col, color: 0}];
 	}
