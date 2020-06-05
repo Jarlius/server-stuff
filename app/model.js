@@ -55,13 +55,13 @@ nextState = color => {
 		state = 'blueprep';
 		break;
 	case 'blueprep':
-		if (!checkScoreZero('blue'))
+		if (color === 'blue' && !checkScoreZero('blue'))
 			break;
 		board['blue'] = Array(size*size).fill(0);
 		state = 'redprep';
 		break;
 	case 'redprep':
-		if (!checkScoreZero('red'))
+		if (color === 'red' && !checkScoreZero('red'))
 			break;
 		board['red'] = Array(size*size).fill(0);
 		state = 'blueturn';
