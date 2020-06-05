@@ -206,8 +206,11 @@ const takeTurn = tile => {
 };
 
 exports.tileClick = tile => {
-	if (state === 'blueprep' || state === 'redprep')
+	if (state === tile.color + 'prep')
 		return prepare(tile);
-	else
+	else if (state === tile.color + 'turn')
 		return takeTurn(tile);
+	else if (state === tile.color + 'end')
+		nextState(tile.color);
+	return [];
 };
