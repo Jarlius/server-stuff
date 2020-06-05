@@ -47,25 +47,17 @@ exports.getBoards = color => {
 };
 
 /**
- * Try to change the program state into its next state
+ * Change the program state into its next state
  */
-nextState = color => {
+const nextState = () => {
 	switch (state) {
 	case 'start':
-		board['blue'] = Array(size*size).fill(0);
 		state = 'blueprep';
 		break;
 	case 'blueprep':
-		if (color === 'blue' && !checkScoreZero('blue'))
-			break;
-		board['blue'] = Array(size*size).fill(0);
-		board['red'] = Array(size*size).fill(0);
 		state = 'redprep';
 		break;
 	case 'redprep':
-		if (color === 'red' && !checkScoreZero('red'))
-			break;
-		board['red'] = Array(size*size).fill(0);
 		state = 'blueturn';
 		break;
 	case 'blueturn':
@@ -85,7 +77,30 @@ nextState = color => {
 	}
 	return state;
 };
-exports.nextState = nextState;
+
+/**
+ * Control flow for a button press
+ * Initialises arrays and changes states
+ */
+exports.controlButton = color => {
+	switch (state) {
+	case 'start':
+		board['blue'] = Array(size*size).fill(0);
+		break;
+	case 'blueprep':
+		if (color !== 'blue' || !checkScoreZero('blue'))
+			return;
+		board['blue'] = Array(size*size).fill(0);
+		board['red'] = Array(size*size).fill(0);
+		break;
+	case 'redprep':
+		if (color !== 'red' || !checkScoreZero('red'))
+			return;
+		board['red'] = Array(size*size).fill(0);
+		break;
+	}
+	nextState();
+};
 
 /**
  * Change current score by 1/-1, when a ship is deleted/added
@@ -203,7 +218,7 @@ const prepare = tile => {
 const takeTurn = tile => {
 	if (board[tile.color][tile.number-1] !== 0)
 		return [];
-	nextState(tile.color);
+	nextState();
 
 	const other_color = tile.color === 'blue' ? 'red' : 'blue';
 	const move = new Coordinate(tile.number,size);
@@ -223,6 +238,7 @@ const takeTurn = tile => {
 
 /**
  * Flow control for a tile click
+ * Prevents a player's actions when it's not their turn
  */
 exports.tileClick = tile => {
 	if (state === tile.color + 'prep')
@@ -230,6 +246,6 @@ exports.tileClick = tile => {
 	else if (state === tile.color + 'turn')
 		return takeTurn(tile);
 	else if (state === tile.color + 'end')
-		nextState(tile.color);
+		nextState();
 	return [];
 };
