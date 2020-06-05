@@ -27,8 +27,8 @@ const checkScoreZero = color => {
 };
 
 var board = [];
-board['blue'] = Array(size*size).fill(0);
-board['red'] = Array(size*size).fill(0);
+board['blue'] = [];
+board['red'] = [];
 
 var last_move = new Coordinate(0,size);
 
@@ -52,12 +52,14 @@ exports.getBoards = color => {
 nextState = color => {
 	switch (state) {
 	case 'start':
+		board['blue'] = Array(size*size).fill(0);
 		state = 'blueprep';
 		break;
 	case 'blueprep':
 		if (color === 'blue' && !checkScoreZero('blue'))
 			break;
 		board['blue'] = Array(size*size).fill(0);
+		board['red'] = Array(size*size).fill(0);
 		state = 'redprep';
 		break;
 	case 'redprep':
