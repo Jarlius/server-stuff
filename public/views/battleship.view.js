@@ -6,8 +6,7 @@ Vue.component('route-battleship', {
 			score: [],
 			turn: 0,
 			state: '',
-			blue_board: [],
-			red_board: [],
+			boards: [],
 		}
 	},
 	methods: {
@@ -24,10 +23,11 @@ Vue.component('route-battleship', {
 				this.state = data.state;
 				for (var i in data.tiles) {
 					// Using Vue.set forces all state updates, only way to trigger arrays
-					if (this.currentBoard() === 'blue')
-						Vue.set(this.blue_board, data.tiles[i].number-1, data.tiles[i].color);
-					else
-						Vue.set(this.red_board, data.tiles[i].number-1, data.tiles[i].color);
+					Vue.set(
+						this.boards[this.currentBoard()],
+						data.tiles[i].number-1,
+						data.tiles[i].color
+					);
 				}
 			});
 		},
@@ -66,13 +66,7 @@ Vue.component('route-battleship', {
 			return 'none';
 		},
 		tileColor(number) {
-			var color;
-			var board = this.currentBoard();
-			if (board === 'blue')
-				color = this.blue_board[number-1];
-			if (board === 'red')
-				color = this.red_board[number-1];
-			switch(color) {
+			switch(this.boards[this.currentBoard()][number-1]) {
 			case 0:
 				return 'beige';
 			case 1:
@@ -92,8 +86,7 @@ Vue.component('route-battleship', {
 				this.state = data.state;
 				this.size = data.size;
 				this.score = data.score;
-				this.blue_board = data.boards.blue;
-				this.red_board = data.boards.red;
+				this.boards = data.boards;
 			});
 	},
 	template: `
