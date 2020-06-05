@@ -72,7 +72,10 @@ const nextState = () => {
 	case 'redend':
 		state = 'blueturn';
 		break;
-	case 'gameover':
+	case 'bluewin':
+		state = 'start';
+		break;
+	case 'redwin':
 		state = 'start';
 		break;
 	default:
@@ -234,8 +237,10 @@ const takeTurn = tile => {
 	if (ship) {
 		board[tile.color][tile.number-1] = 2;
 		if (iterateLine(ship.c1,ship.c2,tile.color,2,false)) {
-			if (delShip(ship,other_color,true))
-				state = 'gameover';
+			if (delShip(ship,other_color,true)) {
+				state = tile.color + 'win';
+				return [];
+			}
 			return iterateLine(ship.c1,ship.c2,tile.color,3,true);
 		}
 		return [{number: tile.number, color: 2}];

@@ -115,12 +115,17 @@ Vue.component('route-battleship', {
 					</div>
 				</div>
 			</div>
-			<button v-if="state === 'start' || state === 'end'" v-on:click="controlButton()">
+			<button v-if="state === 'start'" v-on:click="controlButton()">
 				Start game
 			</button>
 			<button v-if="state === currentBoard() + 'prep'" v-on:click="controlButton()">
 				End preparation
 			</button>
+			<div v-if="state === 'bluewin' || state === 'redwin'">
+				<button v-on:click="controlButton()">
+					Quit
+				</button>
+			</div>
 		</div>
 	</div>`
 });
