@@ -192,17 +192,24 @@ const prepare = tile => {
 };
 
 const takeTurn = tile => {
-	var new_tile = [{number: tile.number, color: 1}];
-	
-	if (state === (tile.color + 'turn'))
-		board[tile.color][new_tile.number] = new_tile.color;
-	else {
-		new_tile = [];
-		if (state !== 'blueend' && state !== 'redend')
-			return new_tile;
-	}
+	if (board[tile.color][tile.number-1] !== 0)
+		return [];
 	nextState(tile.color);
-	return new_tile;
+
+	const other_color = tile.color === 'blue' ? 'red' : 'blue';
+	const move = new Coordinate(tile.number,size);
+	const ship = badShip(new Ship(move,move),other_color);
+	
+	if (ship) {
+		board[tile.color][tile.number-1] = 2;
+		if (iterateLine(ship.c1,ship.c2,tile.color,2,false)) {
+			delShip(ship,other_color,true);
+			return iterateLine(ship.c1,ship.c2,tile.color,3,true);
+		}
+		return [{number: tile.number, color: 2}];
+	}
+	board[tile.color][tile.number-1] = 1;
+	return [{number: tile.number, color: 1}];
 };
 
 exports.tileClick = tile => {
