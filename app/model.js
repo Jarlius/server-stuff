@@ -134,8 +134,12 @@ const delShip = (ship,color,playing) => {
 	for (var i in ships[color]) {
 		if (ship.equals(ships[color][i])) {
 			ships[color].splice(i,1);
-			editScore(color, ship.size, 1);
-			// TODO trigger end of game if ships[color].length === 0 and playin === true
+			if (!playing)
+				editScore(color, ship.size, 1);
+			else {
+				editScore(color === 'blue' ? 'red' : 'blue', ship.size, 1);
+				// TODO trigger end of game if ships[color].length === 0 and playing === true
+			}
 		}
 	}
 };
