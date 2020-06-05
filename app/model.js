@@ -195,6 +195,11 @@ const prepare = tile => {
 	}
 };
 
+/**
+ * Action when a tile is clicked during a player's turn
+ * Already guessed tiles are ignored, misses turn green and hits turn orange.
+ * If a hit sinks a ship, the whole ship turns black and the player's score increases
+ */
 const takeTurn = tile => {
 	if (board[tile.color][tile.number-1] !== 0)
 		return [];
@@ -216,6 +221,9 @@ const takeTurn = tile => {
 	return [{number: tile.number, color: 1}];
 };
 
+/**
+ * Flow control for a tile click
+ */
 exports.tileClick = tile => {
 	if (state === tile.color + 'prep')
 		return prepare(tile);
