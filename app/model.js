@@ -173,6 +173,7 @@ const prepare = tile => {
 		const ship = badShip(new Ship(move,move),tile.color);
 		if (!ship) {
 			last_move = move;
+			board[tile.color][tile.number-1] = 1;
 			return [{number: tile.number, color: 1}];
 		} else {
 			delShip(ship,tile.color,false);
@@ -183,8 +184,10 @@ const prepare = tile => {
 		last_move = new Coordinate(0,size);
 		if (tmp_move.dist(move) !== 0 && addShip(new Ship(move,tmp_move),tile.color))
 			return iterateLine(move,tmp_move,tile.color,3,true);
-		else
+		else {
+			board[tile.color][tmp_move.row*size + tmp_move.col-1] = 0;
 			return [{number: tmp_move.row*size + tmp_move.col, color: 0}];
+		}
 	}
 };
 
