@@ -13,6 +13,18 @@ ships['red'] = [];
 var score = [];
 score['blue'] = [];
 score['red'] = [];
+const scoreInit = color => {
+	for (var i in ship_specs)
+		score[color][i] = ship_specs[i].slice();
+};
+scoreInit('blue');
+scoreInit('red');
+const checkScoreZero = color => {
+	for (var i in ship_specs)
+		if (score[color][i][1] !== 0)
+			return false;
+	return true;
+};
 
 var board = [];
 board['blue'] = Array(size*size).fill(0);
@@ -40,14 +52,18 @@ exports.getBoards = color => {
 nextState = color => {
 	switch (state) {
 	case 'start':
-		score['blue'] = ship_specs.slice();
 		state = 'blueprep';
 		break;
 	case 'blueprep':
-		score['red'] = ship_specs.slice();
+		if (!checkScoreZero('blue'))
+			break;
+		board['blue'] = Array(size*size).fill(0);
 		state = 'redprep';
 		break;
 	case 'redprep':
+		if (!checkScoreZero('red'))
+			break;
+		board['red'] = Array(size*size).fill(0);
 		state = 'blueturn';
 		break;
 	case 'blueturn':
