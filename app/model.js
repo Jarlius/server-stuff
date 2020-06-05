@@ -6,7 +6,6 @@ const ship_specs = [[2,1],[3,2],[4,1],[5,1]];
 
 var state = 'start';
 
-var build_ships = [];
 var ships = [];
 ships['blue'] = [];
 ships['red'] = [];
@@ -35,24 +34,17 @@ exports.getBoards = color => {
 */	return {blue: board['blue'], red: board['red']};
 };
 
-const buildInit = () => {
-	for (var i in ship_specs)
-		for (var j=0; j < ship_specs[i][1]; j++)
-			build_ships.push(ship_specs[i][0]);
-	score['blue'] = ship_specs;
-	score['red'] = ship_specs;
-};
-
 /**
  * Try to change the program state into its next state
  */
 nextState = color => {
 	switch (state) {
 	case 'start':
-		buildInit();
+		score['blue'] = ship_specs.slice();
 		state = 'blueprep';
 		break;
 	case 'blueprep':
+		score['red'] = ship_specs.slice();
 		state = 'redprep';
 		break;
 	case 'redprep':
@@ -82,8 +74,14 @@ exports.nextState = nextState;
  */
 const editScore = (color, length, increment) => {
 	for (var i in ship_specs)
-		if (ship_specs[i][0] === length)
-			score[color][i][1] += increment;
+		if (ship_specs[i][0] === length) {
+			if (score[color][i][1] + increment >= 0) {
+				score[color][i][1] += increment;
+				return true;
+			} else
+				return false;
+		}
+	return false;
 };
 
 /**
@@ -104,17 +102,10 @@ const badShip = (ship,color) => {
 const addShip = (ship,color) => {
 	if (badShip(ship,color))
 		return false;
-	var allowed_length = false;
-	for (let i=0; i < build_ships.length; i++) {
-		if (ship.size === build_ships[i]) {
-			build_ships.splice(i,1);
-			allowed_length = true;
-		}
-	}
-	if (!allowed_length)
+	if (editScore(color, ship.size, -1))
+		ships[color].push(ship);
+	else
 		return false;
-	editScore(color, ship.size, -1);
-	ships[color].push(ship);
 	return true;
 };
 /**
@@ -167,7 +158,6 @@ const prepare = tile => {
 			return [{number: tile.number, color: 1}];
 		} else {
 			delShip(ship,tile.color,false);
-			build_ships.push(ship.size);
 			return iterateLine(ship.c1,ship.c2,tile.color,0,true);
 		}
 	} else {
