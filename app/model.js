@@ -72,6 +72,9 @@ const nextState = () => {
 	case 'redend':
 		state = 'blueturn';
 		break;
+	case 'gameover':
+		state = 'start';
+		break;
 	default:
 		break;
 	}
@@ -97,6 +100,8 @@ exports.controlButton = color => {
 		if (color !== 'red' || !checkScoreZero('red'))
 			return;
 		board['red'] = Array(size*size).fill(0);
+		break;
+	default:
 		break;
 	}
 	nextState();
@@ -153,10 +158,12 @@ const delShip = (ship,color,playing) => {
 				editScore(color, ship.size, 1);
 			else {
 				editScore(color === 'blue' ? 'red' : 'blue', ship.size, 1);
-				// TODO trigger end of game if ships[color].length === 0 and playing === true
+				// trigger end of game
+				return (ships[color].length === 0);
 			}
 		}
 	}
+	return false;
 };
 
 /**
@@ -227,7 +234,8 @@ const takeTurn = tile => {
 	if (ship) {
 		board[tile.color][tile.number-1] = 2;
 		if (iterateLine(ship.c1,ship.c2,tile.color,2,false)) {
-			delShip(ship,other_color,true);
+			if (delShip(ship,other_color,true))
+				state = 'gameover';
 			return iterateLine(ship.c1,ship.c2,tile.color,3,true);
 		}
 		return [{number: tile.number, color: 2}];
