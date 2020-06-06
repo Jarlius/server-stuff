@@ -54,14 +54,15 @@ Vue.component('route-battleship', {
 	},
 	created() {
 		this.socket = io().connect();
-		this.socket.on('control', data => {
+		this.socket.on('control-all', data => {
 			this.state = data.state;
-			this.score = data.score;
 			this.boards = data.boards;
 		});
-		this.socket.on('click', data => {
-			this.state = data.state;
+		this.socket.on('control-color', data => {
 			this.score = data.score;
+		});
+		this.socket.on('click-all', data => {
+			this.state = data.state;
 			for (var i in data.tiles) {
 				// Using Vue.set forces all state updates, only way to trigger arrays
 				Vue.set(
@@ -70,6 +71,9 @@ Vue.component('route-battleship', {
 					data.tiles[i].color
 				);
 			}
+		});
+		this.socket.on('click-color', data => {
+			this.score = data.score;
 		});
 		fetch(`/api/state/${this.color}`)
 			.then(res => res.json())
