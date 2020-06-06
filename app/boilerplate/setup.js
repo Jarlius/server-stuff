@@ -33,6 +33,6 @@ module.exports = () => {
 	const io = socket_io.listen(httpServer);
 
 	return {
-		app, io, httpServer
+		app, io, listen: (port, cb) => httpServer.listen(port, cb)
 	}
 };
