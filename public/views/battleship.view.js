@@ -33,17 +33,7 @@ Vue.component('route-battleship', {
 			});
 		},
 		controlButton() {
-			fetch('/api/control', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({color: this.color})
-			})
-			.then(res => res.json())
-			.then(data => {
-				this.state = data.state;
-			});
+			this.socket.emit('control', {color: this.color});
 		},
 		currentBoard() {
 			switch (this.state) {
@@ -82,9 +72,11 @@ Vue.component('route-battleship', {
 	},
 	created() {
 		this.socket = io().connect();
-		this.socket.emit('created', {msg: 'testping'});
 		this.socket.on('created', data => {
 			console.log(data.msg);
+		});
+		this.socket.on('control', data => {
+			this.state = data.state;
 		});
 		fetch(`/api/state/${this.color}`)
 			.then(res => res.json())
@@ -94,6 +86,7 @@ Vue.component('route-battleship', {
 				this.score = data.score;
 				this.boards = data.boards;
 			});
+		this.socket.emit('created', {msg: 'testping'});
 	},
 	template: `
 	<div class="grid-container origin">
