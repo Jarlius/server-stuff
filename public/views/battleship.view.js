@@ -72,9 +72,6 @@ Vue.component('route-battleship', {
 	},
 	created() {
 		this.socket = io().connect();
-		this.socket.on('created', data => {
-			console.log(data.msg);
-		});
 		this.socket.on('control', data => {
 			this.state = data.state;
 		});
@@ -86,7 +83,7 @@ Vue.component('route-battleship', {
 				this.score = data.score;
 				this.boards = data.boards;
 			});
-		this.socket.emit('created', {msg: 'testping'});
+		this.socket.emit('created', {color: this.color});
 	},
 	template: `
 	<div class="grid-container origin">
