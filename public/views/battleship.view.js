@@ -12,25 +12,7 @@ Vue.component('route-battleship', {
 	},
 	methods: {
 		tileClick(number) {
-			fetch('/api/tileclick', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({number: number, color: this.color})
-			})
-			.then(res => res.json())
-			.then(data => {
-				this.state = data.state;
-				for (var i in data.tiles) {
-					// Using Vue.set forces all state updates, only way to trigger arrays
-					Vue.set(
-						this.boards[this.currentBoard()],
-						data.tiles[i].number,
-						data.tiles[i].color
-					);
-				}
-			});
+			this.socket.emit('click', {number: number, color: this.color});
 		},
 		controlButton() {
 			this.socket.emit('control', {color: this.color});
@@ -76,6 +58,18 @@ Vue.component('route-battleship', {
 			this.state = data.state;
 			this.score = data.score;
 			this.boards = data.boards;
+		});
+		this.socket.on('click', data => {
+			this.state = data.state;
+			this.score = data.score;
+			for (var i in data.tiles) {
+				// Using Vue.set forces all state updates, only way to trigger arrays
+				Vue.set(
+					this.boards[this.currentBoard()],
+					data.tiles[i].number,
+					data.tiles[i].color
+				);
+			}
 		});
 		fetch(`/api/state/${this.color}`)
 			.then(res => res.json())

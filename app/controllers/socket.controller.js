@@ -16,5 +16,15 @@ module.exports = (socket, io) => {
 			boards: model.getBoards(req.color)
 		});
 	});
+	
+	socket.on('click', req => {
+		console.log('click', req.number, req.color);
+		const tiles = model.tileClick(req);
+		io.to('').emit('click', {
+			state: model.getState(),
+			score: model.getScore(req.color),
+			tiles: tiles
+		});
+	});
 
 };
