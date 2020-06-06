@@ -183,9 +183,9 @@ const iterateLine = (c1,c2,color,other_color,assigning) => {
 		else
 			index = (Math.min(c1.row,c2.row)+i)*size + c1.col;
 		if (assigning) {
-			board[color][index-1] = other_color;
+			board[color][index] = other_color;
 			ret_line.push({number: index, color: other_color});
-		} else if (board[color][index-1] !== other_color)
+		} else if (board[color][index] !== other_color)
 			return false;
 	}
 	return ret_line;
@@ -202,7 +202,7 @@ const prepare = tile => {
 		const ship = badShip(new Ship(move,move),tile.color);
 		if (!ship) {
 			last_move = move;
-			board[tile.color][tile.number-1] = 1;
+			board[tile.color][tile.number] = 1;
 			return [{number: tile.number, color: 1}];
 		} else {
 			delShip(ship,tile.color,false);
@@ -214,7 +214,7 @@ const prepare = tile => {
 		if (tmp_move.dist(move) !== 0 && addShip(new Ship(move,tmp_move),tile.color))
 			return iterateLine(move,tmp_move,tile.color,3,true);
 		else {
-			board[tile.color][tmp_move.row*size + tmp_move.col-1] = 0;
+			board[tile.color][tmp_move.row*size + tmp_move.col] = 0;
 			return [{number: tmp_move.row*size + tmp_move.col, color: 0}];
 		}
 	}
@@ -226,7 +226,7 @@ const prepare = tile => {
  * If a hit sinks a ship, the whole ship turns black and the player's score increases
  */
 const takeTurn = tile => {
-	if (board[tile.color][tile.number-1] !== 0)
+	if (board[tile.color][tile.number] !== 0)
 		return [];
 	nextState();
 
@@ -235,7 +235,7 @@ const takeTurn = tile => {
 	const ship = badShip(new Ship(move,move),other_color);
 	
 	if (ship) {
-		board[tile.color][tile.number-1] = 2;
+		board[tile.color][tile.number] = 2;
 		if (iterateLine(ship.c1,ship.c2,tile.color,2,false)) {
 			if (delShip(ship,other_color,true)) {
 				state = tile.color + 'win';
@@ -245,7 +245,7 @@ const takeTurn = tile => {
 		}
 		return [{number: tile.number, color: 2}];
 	}
-	board[tile.color][tile.number-1] = 1;
+	board[tile.color][tile.number] = 1;
 	return [{number: tile.number, color: 1}];
 };
 

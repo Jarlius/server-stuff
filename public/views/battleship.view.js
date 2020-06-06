@@ -26,7 +26,7 @@ Vue.component('route-battleship', {
 					// Using Vue.set forces all state updates, only way to trigger arrays
 					Vue.set(
 						this.boards[this.currentBoard()],
-						data.tiles[i].number-1,
+						data.tiles[i].number,
 						data.tiles[i].color
 					);
 				}
@@ -108,7 +108,7 @@ Vue.component('route-battleship', {
 				<div v-for="n in size*size">
 					<div
 						:class="'grid-item tile ' + tileColor(n)"
-						v-on:click="tileClick(n)"
+						v-on:click="tileClick(n-1)"
 					>
 					</div>
 				</div>
