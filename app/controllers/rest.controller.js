@@ -15,10 +15,6 @@ router.get('/state/:color', function(req, res) {
 	});
 });
 
-router.post('/control', function(req, res) {
-	res.json({state: model.controlButton(req.body.color)});
-});
-
 router.post('/tileclick', function(req, res) {
 	tiles = model.tileClick(req.body);
 	res.json({
