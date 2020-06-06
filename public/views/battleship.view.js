@@ -74,6 +74,8 @@ Vue.component('route-battleship', {
 		this.socket = io().connect();
 		this.socket.on('control', data => {
 			this.state = data.state;
+			this.score = data.score;
+			this.boards = data.boards;
 		});
 		fetch(`/api/state/${this.color}`)
 			.then(res => res.json())

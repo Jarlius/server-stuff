@@ -10,7 +10,11 @@ module.exports = (socket, io) => {
 	socket.on('control', req => {
 		console.log('control', req.color);
 		model.controlButton(req.color);
-		io.to('').emit('control', {state: model.getState()});
+		io.to('').emit('control', {
+			state: model.getState(),
+			score: model.getScore(req.color),
+			boards: model.getBoards(req.color)
+		});
 	});
 
 };
