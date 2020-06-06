@@ -30,7 +30,7 @@ var board = [];
 board['blue'] = [];
 board['red'] = [];
 
-var last_move = new Coordinate(0,size);
+var last_move = null;
 
 /**
  * Read only get functions for model variables
@@ -198,7 +198,7 @@ const iterateLine = (c1,c2,color,other_color,assigning) => {
  */
 const prepare = tile => {
 	const move = new Coordinate(tile.number,size);
-	if (last_move.equals(new Coordinate(0,size))) {
+	if (last_move === null) {
 		const ship = badShip(new Ship(move,move),tile.color);
 		if (!ship) {
 			last_move = move;
@@ -210,7 +210,7 @@ const prepare = tile => {
 		}
 	} else {
 		const tmp_move = last_move;
-		last_move = new Coordinate(0,size);
+		last_move = null;
 		if (tmp_move.dist(move) !== 0 && addShip(new Ship(move,tmp_move),tile.color))
 			return iterateLine(move,tmp_move,tile.color,3,true);
 		else {
