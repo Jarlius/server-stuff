@@ -7,6 +7,11 @@ const port = 8989;
 const router = require('./controllers/rest.controller.js');
 app.use('/api', router);
 
+const socketController = require('./controllers/socket.controller.js');
+io.on('connection', socket => {
+	socketController(socket, io);
+});
+
 listen(port, () => {
   console.log("server listening on port", port);
 });
