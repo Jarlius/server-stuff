@@ -82,7 +82,10 @@ Vue.component('route-battleship', {
 	},
 	created() {
 		this.socket = io().connect();
-		this.socket.emit('test', {});
+		this.socket.emit('created', {msg: 'testping'});
+		this.socket.on('created', data => {
+			console.log(data.msg);
+		});
 		fetch(`/api/state/${this.color}`)
 			.then(res => res.json())
 			.then(data => {
