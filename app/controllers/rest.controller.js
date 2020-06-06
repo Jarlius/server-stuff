@@ -15,12 +15,4 @@ router.get('/state/:color', function(req, res) {
 	});
 });
 
-router.post('/tileclick', function(req, res) {
-	tiles = model.tileClick(req.body);
-	res.json({
-		state: model.getState(),
-		tiles: tiles
-	});
-});
-
 module.exports = router;
