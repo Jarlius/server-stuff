@@ -1,6 +1,7 @@
 Vue.component('route-battleship', {
 	data() {
 		return {
+			socket: null,
 			color: this.$route.params.color,
 			size: 0,
 			score: [],
@@ -80,6 +81,7 @@ Vue.component('route-battleship', {
 		}
 	},
 	created() {
+		this.socket = io().connect();
 		fetch(`/api/state/${this.color}`)
 			.then(res => res.json())
 			.then(data => {
