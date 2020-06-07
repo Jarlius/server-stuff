@@ -16,8 +16,11 @@ const scoreInit = color => {
 };
 scoreInit('blue');
 scoreInit('red');
-const checkScoreZero = color => {
-	for (var i in ship_specs)
+/**
+ * Check if the count on all ship lengths are zero
+ */
+const isZero = color => {
+	for (var i in score[color])
 		if (score[color][i][1] !== 0)
 			return false;
 	return true;
@@ -91,13 +94,13 @@ exports.controlButton = color => {
 		board['blue'] = Array(size*size).fill(0);
 		break;
 	case 'blueprep':
-		if (color !== 'blue' || !checkScoreZero('blue'))
+		if (color !== 'blue' || !isZero('blue'))
 			return;
 		board['blue'] = Array(size*size).fill(0);
 		board['red'] = Array(size*size).fill(0);
 		break;
 	case 'redprep':
-		if (color !== 'red' || !checkScoreZero('red'))
+		if (color !== 'red' || !isZero('red'))
 			return;
 		board['red'] = Array(size*size).fill(0);
 		break;
@@ -112,8 +115,8 @@ exports.controlButton = color => {
  * Impossible if the length is bad/already used
  */
 const editScore = (color, length, increment) => {
-	for (var i in ship_specs)
-		if (ship_specs[i][0] === length) {
+	for (var i in score[color])
+		if (score[color][i][0] === length) {
 			if (score[color][i][1] + increment >= 0) {
 				score[color][i][1] += increment;
 				return true;
