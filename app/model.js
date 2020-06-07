@@ -112,6 +112,7 @@ exports.controlButton = color => {
 
 /**
  * Change current score by 1/-1, when a ship is deleted/added
+ * Impossible if the length is bad/already used
  */
 const editScore = (color, length, increment) => {
 	for (var i in ship_specs)
@@ -137,16 +138,9 @@ const badShip = (ship,color) => {
 };
 /**
  * Add a ship to the list of built ships
- * Impossible if ship is bad or if the length is bad/already used
  */
 const addShip = (ship,color) => {
-	if (badShip(ship,color))
-		return false;
-	if (editScore(color, ship.size, -1))
-		ships[color].push(ship);
-	else
-		return false;
-	return true;
+	ships[color].push(ship);
 };
 /**
  * Detelete a target ship
@@ -205,9 +199,11 @@ const prepare = tile => {
 	} else {
 		const tmp_move = last_move;
 		last_move = null;
-		if (tmp_move.dist(move) !== 0 && addShip(new Ship(move,tmp_move),tile.color))
+		const new_ship = new Ship(move,tmp_move);
+		if (!badShip(new_ship,tile.color) && editScore(tile.color, new_ship.size, -1)) {
+			addShip(new_ship,tile.color)
 			return iterateLine(move,tmp_move,tile.color,3,true);
-		else {
+		} else {
 			board[tile.color][tmp_move.row*size + tmp_move.col] = 0;
 			return [{number: tmp_move.row*size + tmp_move.col, color: 0}];
 		}
