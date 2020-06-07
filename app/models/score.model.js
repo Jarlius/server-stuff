@@ -1,11 +1,19 @@
 var score = [];
 
-exports.init = (ship_specs, color) => {
-	score[color] = [];
-	for (var i in ship_specs)
-		score[color][i] = ship_specs[i].slice();
+/**
+ * Reset a ship's score to specified amount
+ */
+exports.reset = (ship_specs, colors) => {
+	for (var i in colors) {
+		score[colors[i]] = [];
+		for (var j in ship_specs)
+			score[colors[i]][j] = ship_specs[j].slice();
+	}
 };
 
+/**
+ * Get a ship's score
+ */
 exports.get = color => {
 	return score[color];
 };

@@ -7,9 +7,6 @@ const score = require('./models/score.model.js');
 const size = 9;
 const ship_specs = [[2,1],[3,2],[4,1],[5,1]];
 
-score.init(ship_specs,'blue');
-score.init(ship_specs,'red');
-
 var state = 'start';
 
 var board = [];
@@ -77,6 +74,7 @@ const nextState = () => {
 exports.controlButton = color => {
 	switch (state) {
 	case 'start':
+		score.reset(ship_specs,['blue','red']);
 		board['blue'] = Array(size*size).fill(0);
 		break;
 	case 'blueprep':
