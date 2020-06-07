@@ -1,30 +1,16 @@
 const Coordinate = require('./models/coordinate.model.js');
 const Ship = require('./models/ship.model.js');
+
 const ships = require('./models/ships.model.js');
+const score = require('./models/score.model.js');
 
 const size = 9;
 const ship_specs = [[2,1],[3,2],[4,1],[5,1]];
 
-var state = 'start';
+score.init(ship_specs,'blue');
+score.init(ship_specs,'red');
 
-var score = [];
-score['blue'] = [];
-score['red'] = [];
-const scoreInit = color => {
-	for (var i in ship_specs)
-		score[color][i] = ship_specs[i].slice();
-};
-scoreInit('blue');
-scoreInit('red');
-/**
- * Check if the count on all ship lengths are zero
- */
-const isZero = color => {
-	for (var i in score[color])
-		if (score[color][i][1] !== 0)
-			return false;
-	return true;
-};
+var state = 'start';
 
 var board = [];
 board['blue'] = [];
@@ -37,7 +23,7 @@ var last_move = null;
  */
 exports.getState = () => {return state;};
 exports.getSize = () => {return size;};
-exports.getScore = color => {return score[color];};
+exports.getScore = color => {return score.get(color);};
 exports.getBoards = color => {
 /*	if (color === 'blue')
 		return {blue: board['blue'], red: []};
@@ -94,13 +80,13 @@ exports.controlButton = color => {
 		board['blue'] = Array(size*size).fill(0);
 		break;
 	case 'blueprep':
-		if (color !== 'blue' || !isZero('blue'))
+		if (color !== 'blue' || !score.isZero('blue'))
 			return;
 		board['blue'] = Array(size*size).fill(0);
 		board['red'] = Array(size*size).fill(0);
 		break;
 	case 'redprep':
-		if (color !== 'red' || !isZero('red'))
+		if (color !== 'red' || !score.isZero('red'))
 			return;
 		board['red'] = Array(size*size).fill(0);
 		break;
@@ -108,22 +94,6 @@ exports.controlButton = color => {
 		break;
 	}
 	nextState();
-};
-
-/**
- * Change current score by 1/-1, when a ship is deleted/added
- * Impossible if the length is bad/already used
- */
-const editScore = (color, length, increment) => {
-	for (var i in score[color])
-		if (score[color][i][0] === length) {
-			if (score[color][i][1] + increment >= 0) {
-				score[color][i][1] += increment;
-				return true;
-			} else
-				return false;
-		}
-	return false;
 };
 
 /**
@@ -163,14 +133,14 @@ const prepare = tile => {
 			return [{number: tile.number, color: 1}];
 		} else {
 			ships.delShip(ship,tile.color);
-			editScore(tile.color, ship.size, 1);
+			score.edit(tile.color, ship.size, 1);
 			return iterateLine(ship.c1,ship.c2,tile.color,0,true);
 		}
 	} else {
 		const tmp_move = last_move;
 		last_move = null;
 		const new_ship = new Ship(move,tmp_move);
-		if (!ships.badShip(new_ship,tile.color) && editScore(tile.color, new_ship.size, -1)) {
+		if (!ships.badShip(new_ship,tile.color) && score.edit(tile.color, new_ship.size, -1)) {
 			ships.addShip(new_ship,tile.color)
 			return iterateLine(move,tmp_move,tile.color,3,true);
 		} else {
@@ -202,7 +172,7 @@ const takeTurn = tile => {
 				state = tile.color + 'win';
 				return [];
 			}
-			editScore(tile.color, ship.size, 1);
+			score.edit(tile.color, ship.size, 1);
 			return iterateLine(ship.c1,ship.c2,tile.color,3,true);
 		}
 		return [{number: tile.number, color: 2}];
