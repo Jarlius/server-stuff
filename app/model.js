@@ -130,11 +130,10 @@ const editScore = (color, length, increment) => {
  * Returns obstructing ship if bad, false if good
  */
 const badShip = (ship,color) => {
-	var false_or_ship = false;
 	for (var i in ships[color])
 		if (ship.obstructs(ships[color][i]))
-			false_or_ship = ships[color][i];
-	return false_or_ship;
+			return ships[color][i];
+	return false;
 };
 /**
  * Add a ship to the list of built ships
