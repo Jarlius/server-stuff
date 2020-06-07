@@ -152,17 +152,11 @@ const addShip = (ship,color) => {
  * Detelete a target ship
  * If not in preparation, check if end of game when 0 ships left
  */
-const delShip = (ship,color,playing) => {
+const delShip = (ship,color) => {
 	for (var i in ships[color]) {
 		if (ship.equals(ships[color][i])) {
 			ships[color].splice(i,1);
-			if (!playing)
-				editScore(color, ship.size, 1);
-			else {
-				editScore(color === 'blue' ? 'red' : 'blue', ship.size, 1);
-				// trigger end of game
-				return (ships[color].length === 0);
-			}
+			return (ships[color].length === 0);
 		}
 	}
 	return false;
@@ -204,7 +198,8 @@ const prepare = tile => {
 			board[tile.color][tile.number] = 1;
 			return [{number: tile.number, color: 1}];
 		} else {
-			delShip(ship,tile.color,false);
+			delShip(ship,tile.color);
+			editScore(tile.color, ship.size, 1);
 			return iterateLine(ship.c1,ship.c2,tile.color,0,true);
 		}
 	} else {
@@ -236,10 +231,12 @@ const takeTurn = tile => {
 	if (ship) {
 		board[tile.color][tile.number] = 2;
 		if (iterateLine(ship.c1,ship.c2,tile.color,2,false)) {
-			if (delShip(ship,other_color,true)) {
+			if (delShip(ship,other_color)) {
+				// trigger end of game
 				state = tile.color + 'win';
 				return [];
 			}
+			editScore(tile.color, ship.size, 1);
 			return iterateLine(ship.c1,ship.c2,tile.color,3,true);
 		}
 		return [{number: tile.number, color: 2}];
