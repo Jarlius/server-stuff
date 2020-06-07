@@ -1,14 +1,11 @@
 const Coordinate = require('./models/coordinate.model.js');
 const Ship = require('./models/ship.model.js');
+const ships = require('./models/ships.model.js');
 
 const size = 9;
 const ship_specs = [[2,1],[3,2],[4,1],[5,1]];
 
 var state = 'start';
-
-var ships = [];
-ships['blue'] = [];
-ships['red'] = [];
 
 var score = [];
 score['blue'] = [];
@@ -127,36 +124,6 @@ const editScore = (color, length, increment) => {
 };
 
 /**
- * Checks if a new ship will obstruct any old ship
- * Returns obstructing ship if bad, false if good
- */
-const badShip = (ship,color) => {
-	for (var i in ships[color])
-		if (ship.obstructs(ships[color][i]))
-			return ships[color][i];
-	return false;
-};
-/**
- * Add a ship to the list of built ships
- */
-const addShip = (ship,color) => {
-	ships[color].push(ship);
-};
-/**
- * Detelete a target ship
- * If not in preparation, check if end of game when 0 ships left
- */
-const delShip = (ship,color) => {
-	for (var i in ships[color]) {
-		if (ship.equals(ships[color][i])) {
-			ships[color].splice(i,1);
-			return (ships[color].length === 0);
-		}
-	}
-	return false;
-};
-
-/**
  * Perform iterative task on line
  * If assigning, color tiles between c1 and c2 into other_color, on board type color
  * If not assigning, do not color and return false if line not of a uniform color
@@ -186,13 +153,13 @@ const iterateLine = (c1,c2,color,other_color,assigning) => {
 const prepare = tile => {
 	const move = new Coordinate(tile.number,size);
 	if (last_move === null) {
-		const ship = badShip(new Ship(move,move),tile.color);
+		const ship = ships.badShip(new Ship(move,move),tile.color);
 		if (!ship) {
 			last_move = move;
 			board[tile.color][tile.number] = 1;
 			return [{number: tile.number, color: 1}];
 		} else {
-			delShip(ship,tile.color);
+			ships.delShip(ship,tile.color);
 			editScore(tile.color, ship.size, 1);
 			return iterateLine(ship.c1,ship.c2,tile.color,0,true);
 		}
@@ -200,8 +167,8 @@ const prepare = tile => {
 		const tmp_move = last_move;
 		last_move = null;
 		const new_ship = new Ship(move,tmp_move);
-		if (!badShip(new_ship,tile.color) && editScore(tile.color, new_ship.size, -1)) {
-			addShip(new_ship,tile.color)
+		if (!ships.badShip(new_ship,tile.color) && editScore(tile.color, new_ship.size, -1)) {
+			ships.addShip(new_ship,tile.color)
 			return iterateLine(move,tmp_move,tile.color,3,true);
 		} else {
 			board[tile.color][tmp_move.row*size + tmp_move.col] = 0;
@@ -222,12 +189,12 @@ const takeTurn = tile => {
 
 	const other_color = tile.color === 'blue' ? 'red' : 'blue';
 	const move = new Coordinate(tile.number,size);
-	const ship = badShip(new Ship(move,move),other_color);
+	const ship = ships.badShip(new Ship(move,move),other_color);
 	
 	if (ship) {
 		board[tile.color][tile.number] = 2;
 		if (iterateLine(ship.c1,ship.c2,tile.color,2,false)) {
-			if (delShip(ship,other_color)) {
+			if (ships.delShip(ship,other_color)) {
 				// trigger end of game
 				state = tile.color + 'win';
 				return [];
