@@ -75,6 +75,7 @@ exports.controlButton = color => {
 	switch (state) {
 	case 'start':
 		score.reset(ship_specs,['blue','red']);
+		ships.reset(['blue','red']);
 		board['blue'] = Array(size*size).fill(0);
 		break;
 	case 'blueprep':

@@ -1,6 +1,13 @@
 var ships = [];
-ships['blue'] = [];
-ships['red'] = [];
+
+/**
+ * Reset to remove undestroyed ship at end of game
+ */
+exports.reset = colors => {
+	for (var i in colors)
+		ships[colors[i]] = [];
+};
+
 /**
  * Checks if a new ship will obstruct any old ship
  * Returns obstructing ship if bad, false if good
