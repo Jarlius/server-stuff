@@ -56,6 +56,7 @@ Vue.component('route-battleship', {
 		this.socket = io().connect();
 		this.socket.on('control-all', data => {
 			this.state = data.state;
+			this.turn = data.turn;
 			this.boards = data.boards;
 		});
 		this.socket.on('control-color', data => {
@@ -63,6 +64,7 @@ Vue.component('route-battleship', {
 		});
 		this.socket.on('click-all', data => {
 			this.state = data.state;
+			this.turn = data.turn;
 			for (var i in data.tiles) {
 				// Using Vue.set forces all state updates, only way to trigger arrays
 				Vue.set(
@@ -79,6 +81,7 @@ Vue.component('route-battleship', {
 			.then(res => res.json())
 			.then(data => {
 				this.state = data.state;
+				this.turn = data.turn;
 				this.size = data.size;
 				this.score = data.score;
 				this.boards = data.boards;
@@ -93,7 +96,7 @@ Vue.component('route-battleship', {
 				{{ val[0] }}: <span class="data">{{ val[1] }}</span><br><br>
 			</div>
 			<br>
-			Turn: <span id="turn" class="data">0</span>
+			Turn: <span id="turn" class="data">{{ turn }}</span>
 		</div>
 		<div class="grid-item" :id="color + '-background'">
 			<h1>Battleship!</h1>

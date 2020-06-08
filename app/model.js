@@ -8,6 +8,7 @@ const size = 9;
 const ship_specs = [[2,1],[3,2],[4,1],[5,1]];
 
 var state = 'start';
+var turn = 0;
 
 var board = [];
 board['blue'] = [];
@@ -20,6 +21,7 @@ var last_move = null;
  */
 exports.getState = () => {return state;};
 exports.getSize = () => {return size;};
+exports.getTurn = () => {return turn;};
 exports.getScore = color => {return score.get(color);};
 exports.getBoards = color => {
 	if (state === 'blueprep' || state === 'redprep') {
@@ -76,6 +78,7 @@ const nextState = () => {
 exports.controlButton = color => {
 	switch (state) {
 	case 'start':
+		turn = 0;
 		score.reset(ship_specs,['blue','red']);
 		ships.reset(['blue','red']);
 		board['blue'] = Array(size*size).fill(0);
@@ -90,6 +93,7 @@ exports.controlButton = color => {
 		if (color !== 'red' || !score.isZero('red'))
 			return;
 		board['red'] = Array(size*size).fill(0);
+		turn = 1;
 		break;
 	default:
 		break;
@@ -191,7 +195,10 @@ exports.tileClick = tile => {
 		return prepare(tile);
 	else if (state === tile.color + 'turn')
 		return takeTurn(tile);
-	else if (state === tile.color + 'end')
+	else if (state === tile.color + 'end') {
+		if (tile.color === 'red')
+			turn++;
 		nextState();
+	}
 	return [];
 };

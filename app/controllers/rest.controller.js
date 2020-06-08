@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/state/:color', function(req, res) {
 	res.json({
 		state: model.getState(),
-		// TODO turns
+		turn: model.getTurn(),
 		size: model.getSize(),
 		score: model.getScore(req.params.color),
 		boards: model.getBoards(req.params.color)

@@ -13,6 +13,7 @@ module.exports = (socket, io) => {
 		model.controlButton(req.color);
 		io.to('').emit('control-all', {
 			state: model.getState(),
+			turn: model.getTurn(),
 			boards: model.getBoards(req.color)
 		});
 		io.to(req.color).emit('control-color', {
@@ -25,6 +26,7 @@ module.exports = (socket, io) => {
 		const tiles = model.tileClick(req);
 		io.to('').emit('click-all', {
 			state: model.getState(),
+			turn: model.getTurn(),
 			tiles: tiles
 		});
 		io.to(req.color).emit('click-color', {
