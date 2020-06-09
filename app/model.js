@@ -21,9 +21,10 @@ colors['red'] = 1;
 /**
  * Convert frontend's color string into integer
  */
-exports.colorToNumber = color => {
+const colorToNumber = color => {
 	return colors[color];
 };
+exports.colorToNumber = colorToNumber;
 
 /**
  * Read only get functions for model variables
@@ -124,9 +125,9 @@ const iterateLine = (c1,c2,color,other_color,assigning) => {
 		else
 			index = (Math.min(c1.row,c2.row)+i)*size + c1.col;
 		if (assigning) {
-			board[colors[color]][index] = other_color;
+			board[color][index] = other_color;
 			ret_line.push({number: index, color: other_color});
-		} else if (board[colors[color]][index] !== other_color)
+		} else if (board[color][index] !== other_color)
 			return false;
 	}
 	return ret_line;
@@ -148,7 +149,7 @@ const prepare = tile => {
 		} else {
 			ships.delShip(ship,colors[tile.color]);
 			score.edit(colors[tile.color], ship.size, 1);
-			return iterateLine(ship.c1,ship.c2,tile.color,0,true);
+			return iterateLine(ship.c1,ship.c2,colorToNumber(tile.color),0,true);
 		}
 	} else {
 		const tmp_move = last_move;
@@ -156,7 +157,7 @@ const prepare = tile => {
 		const new_ship = new Ship(move,tmp_move);
 		if (!ships.badShip(new_ship,colors[tile.color]) && score.edit(colors[tile.color], new_ship.size, -1)) {
 			ships.addShip(new_ship,colors[tile.color])
-			return iterateLine(move,tmp_move,tile.color,3,true);
+			return iterateLine(move,tmp_move,colorToNumber(tile.color),3,true);
 		} else {
 			board[colors[tile.color]][tmp_move.row*size + tmp_move.col] = 0;
 			return [{number: tmp_move.row*size + tmp_move.col, color: 0}];
@@ -180,14 +181,14 @@ const takeTurn = tile => {
 	
 	if (ship) {
 		board[colors[tile.color]][tile.number] = 2;
-		if (iterateLine(ship.c1,ship.c2,tile.color,2,false)) {
+		if (iterateLine(ship.c1,ship.c2,colorToNumber(tile.color),2,false)) {
 			if (ships.delShip(ship,colors[other_color])) {
 				// trigger end of game
 				state = tile.color + 'win';
 				return [];
 			}
 			score.edit(colors[tile.color], ship.size, 1);
-			return iterateLine(ship.c1,ship.c2,tile.color,3,true);
+			return iterateLine(ship.c1,ship.c2,colorToNumber(tile.color),3,true);
 		}
 		return [{number: tile.number, color: 2}];
 	}
