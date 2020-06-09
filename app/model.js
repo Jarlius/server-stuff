@@ -58,7 +58,7 @@ exports.controlButton = color => {
 		board[1] = Array(size*size).fill(0);
 		break;
 	case 'prep':
-		if (color !== cur.color || !score.isZero(color))
+		if (color !== cur.player || !score.isZero(color))
 			return;
 		board[color] = Array(size*size).fill(0);
 		if (color)
@@ -161,7 +161,7 @@ const takeTurn = (number,color) => {
 exports.tileClick = tile => {
 	const color = colorToNumber(tile.color);
 	const cur = state.get();
-	if (cur.color !== color)
+	if (color !== cur.player)
 		;// do nothing
 	else if (cur.state === 'prep')
 		return prepare(tile.number,color);

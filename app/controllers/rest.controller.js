@@ -10,7 +10,7 @@ router.get('/state/:color', function(req, res) {
 	const color = model.colorToNumber(req.params.color);
 	res.json({
 		state: model.getState().state,
-		player: model.getState().color,
+		player: model.getState().player,
 		turn: model.getTurn(),
 		size: model.getSize(),
 		score: model.getScore(color),

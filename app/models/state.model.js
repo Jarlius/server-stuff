@@ -1,11 +1,11 @@
 var state = 'start';
-var color = 0;
+var player = 0;
 
 /**
  * Read-only copy
  */
 exports.get = () => {
-	return {state: state, color: color};
+	return {state: state, player: player};
 };
 
 /**
@@ -15,19 +15,19 @@ exports.next = () => {
 	switch (state) {
 	case 'start':
 		state = 'prep';
-		color = 0;
+		player = 0;
 		break;
 	case 'prep':
-		if (color)
+		if (player)
 			state = 'turnplay';
-		color = +!color;
+		player = +!player;
 		break;
 	case 'turnplay':
 		state = 'turnend';
 		break;
 	case 'turnend':
 		state = 'turnplay';
-		color = +!color;
+		player = +!player;
 		break;
 	case 'gameover':
 		state = 'start';
