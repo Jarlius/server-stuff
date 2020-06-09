@@ -46,11 +46,11 @@ Vue.component('route-battleship', {
 			this.player = data.player;
 			this.turn = data.turn;
 		});
-		this.socket.on('control-color', data => {
+		this.socket.on('control', data => {
 			this.score = data.score;
 			this.boards = data.tiles;
 		});
-		this.socket.on('click-color', data => {
+		this.socket.on('click', data => {
 			console.log(data.tiles);
 			this.score = data.score;
 			for (var i in data.tiles) {

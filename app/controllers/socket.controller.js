@@ -1,10 +1,16 @@
 const model = require('../model.js');
 
-const sendAll = io => {
+const sendState = io => {
 	io.to('').emit('state', {
 		state: model.getState().state,
 		player: model.getState().player,
 		turn: model.getTurn(),
+	});
+};
+const sendColor = (io,cmd,color,tiles) => {
+	io.to(color).emit(cmd, {
+		score: model.getScore(color),
+		tiles: tiles
 	});
 };
 
@@ -22,15 +28,9 @@ module.exports = (socket, io) => {
 		const color = model.colorToNumber(req.color);
 		model.controlButton(color);
 		
-		sendAll(io);
-		io.to(color).emit('control-color', {
-			score: model.getScore(color),
-			tiles: model.getBoards(color)
-		});
-		io.to(+!color).emit('control-color', {
-			score: model.getScore(+!color),
-			tiles: model.getBoards(+!color)
-		});
+		sendState(io);
+		sendColor(io,'control',color,model.getBoards(color));
+		sendColor(io,'control',+!color,model.getBoards(+!color));
 	});
 	
 	socket.on('click', req => {
@@ -39,15 +39,9 @@ module.exports = (socket, io) => {
 		const color = model.colorToNumber(req.color);
 		const tiles = model.tileClick(req.number,color);
 		
-		sendAll(io);
-		io.to(color).emit('click-color', {
-			score: model.getScore(color),
-			tiles: tiles[color]
-		});
-		io.to(+!color).emit('click-color', {
-			score: model.getScore(+!color),
-			tiles: tiles[+!color]
-		});
+		sendState(io);
+		sendColor(io,'click',color,tiles[color]);
+		sendColor(io,'click',+!color,tiles[+!color]);
 	});
 
 };
