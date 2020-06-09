@@ -34,7 +34,8 @@ exports.getSize = () => {return size;};
 exports.getTurn = () => {return turn;};
 exports.getScore = color => {return score.get(color);};
 exports.getBoards = color => {
-	if (state === 'prep') {
+	const cur = state.get();
+	if (cur.state === 'prep') {
 		if (color)
 			return {blue: [], red: board[1]};
 		else
