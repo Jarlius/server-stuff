@@ -7,12 +7,13 @@ const router = express.Router();
  * Format: { state, turn, size, [color]score, boards(tile{n,color})[blue, red]
  */
 router.get('/state/:color', function(req, res) {
+	const color = model.colorToNumber(req.params.color);
 	res.json({
 		state: model.getState(),
 		turn: model.getTurn(),
 		size: model.getSize(),
-		score: model.getScore(req.params.color),
-		boards: model.getBoards(req.params.color)
+		score: model.getScore(color),
+		boards: model.getBoards(color)
 	});
 });
 

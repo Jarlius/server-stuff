@@ -31,7 +31,7 @@ exports.colorToNumber = color => {
 exports.getState = () => {return state;};
 exports.getSize = () => {return size;};
 exports.getTurn = () => {return turn;};
-exports.getScore = color => {return score.get(colors[color]);};
+exports.getScore = color => {return score.get(color);};
 exports.getBoards = color => {
 /*	if (state === 'blueprep' || state === 'redprep') {
 		if (color === 'blue')
