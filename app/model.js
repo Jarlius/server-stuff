@@ -138,28 +138,28 @@ const iterateLine = (c1,c2,color,other_color,assigning) => {
  * if no green tile is present, create a green tile on empty tile, or delet a ship
  * if green tile is present, try to create a ship, erase green tile if unsuccessful
  */
-const prepare = tile => {
-	const move = new Coordinate(tile.number,size);
+const prepare = (number,color) => {
+	const move = new Coordinate(number,size);
 	if (last_move === null) {
-		const ship = ships.badShip(new Ship(move,move),colors[tile.color]);
+		const ship = ships.badShip(new Ship(move,move),color);
 		if (!ship) {
 			last_move = move;
-			board[colors[tile.color]][tile.number] = 1;
-			return [{number: tile.number, color: 1}];
+			board[color][number] = 1;
+			return [{number: number, color: 1}];
 		} else {
-			ships.delShip(ship,colors[tile.color]);
-			score.edit(colors[tile.color], ship.size, 1);
-			return iterateLine(ship.c1,ship.c2,colorToNumber(tile.color),0,true);
+			ships.delShip(ship,color);
+			score.edit(color, ship.size, 1);
+			return iterateLine(ship.c1,ship.c2,color,0,true);
 		}
 	} else {
 		const tmp_move = last_move;
 		last_move = null;
 		const new_ship = new Ship(move,tmp_move);
-		if (!ships.badShip(new_ship,colors[tile.color]) && score.edit(colors[tile.color], new_ship.size, -1)) {
-			ships.addShip(new_ship,colors[tile.color])
-			return iterateLine(move,tmp_move,colorToNumber(tile.color),3,true);
+		if (!ships.badShip(new_ship,color) && score.edit(color, new_ship.size, -1)) {
+			ships.addShip(new_ship,color);
+			return iterateLine(move,tmp_move,color,3,true);
 		} else {
-			board[colors[tile.color]][tmp_move.row*size + tmp_move.col] = 0;
+			board[color][tmp_move.row*size + tmp_move.col] = 0;
 			return [{number: tmp_move.row*size + tmp_move.col, color: 0}];
 		}
 	}
@@ -201,8 +201,9 @@ const takeTurn = tile => {
  * Prevents a player's actions when it's not their turn
  */
 exports.tileClick = tile => {
+	const color = colorToNumber(tile.color);
 	if (state === tile.color + 'prep')
-		return prepare(tile);
+		return prepare(tile.number,color);
 	else if (state === tile.color + 'turn')
 		return takeTurn(tile);
 	else if (state === tile.color + 'end') {
