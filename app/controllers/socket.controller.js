@@ -18,10 +18,14 @@ module.exports = (socket, io) => {
 			state: model.getState().state,
 			player: model.getState().player,
 			turn: model.getTurn(),
-			boards: model.getBoards(color)
 		});
 		io.to(color).emit('control-color', {
 			score: model.getScore(color),
+			boards: model.getBoards(color)
+		});
+		io.to(+!color).emit('control-color', {
+			score: model.getScore(+!color),
+			boards: model.getBoards(+!color)
 		});
 	});
 	

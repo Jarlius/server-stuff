@@ -45,10 +45,10 @@ Vue.component('route-battleship', {
 			this.state = data.state;
 			this.player = data.player;
 			this.turn = data.turn;
-			this.boards = data.boards;
 		});
 		this.socket.on('control-color', data => {
 			this.score = data.score;
+			this.boards = data.boards;
 		});
 		this.socket.on('click-all', data => {
 			this.state = data.state;
