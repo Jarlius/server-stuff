@@ -19,6 +19,13 @@ colors['blue'] = 0;
 colors['red'] = 1;
 
 /**
+ * Convert frontend's color string into integer
+ */
+exports.colorToNumber = color => {
+	return colors[color];
+};
+
+/**
  * Read only get functions for model variables
  */
 exports.getState = () => {return state;};
