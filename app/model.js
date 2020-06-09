@@ -175,14 +175,13 @@ const takeTurn = (number,color) => {
 		return [];
 	nextState();
 
-	const other_color = (color == '0' ? '1' : '0');
 	const move = new Coordinate(number,size);
-	const ship = ships.badShip(new Ship(move,move),other_color);
+	const ship = ships.badShip(new Ship(move,move),+!color);
 	
 	if (ship) {
 		board[color][number] = 2;
 		if (iterateLine(ship.c1,ship.c2,color,2,false)) {
-			if (ships.delShip(ship,other_color)) {
+			if (ships.delShip(ship,+!color)) {
 				// trigger end of game
 				if (color)
 					state = 'redwin';
