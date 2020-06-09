@@ -5,7 +5,7 @@ module.exports = (socket, io) => {
 	socket.on('created', req => {
 		console.log('join', req.color);
 		socket.join('');
-		socket.join(req.color);
+		socket.join(model.colorToNumber(req.color));
 	});
 	
 	socket.on('control', req => {
@@ -20,7 +20,7 @@ module.exports = (socket, io) => {
 			turn: model.getTurn(),
 			boards: model.getBoards(color)
 		});
-		io.to(req.color).emit('control-color', {
+		io.to(color).emit('control-color', {
 			score: model.getScore(color),
 		});
 	});
@@ -37,7 +37,7 @@ module.exports = (socket, io) => {
 			turn: model.getTurn(),
 			tiles: tiles[color]
 		});
-		io.to(req.color).emit('click-color', {
+		io.to(color).emit('click-color', {
 			score: model.getScore(color),
 		});
 	});
