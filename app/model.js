@@ -34,13 +34,13 @@ exports.getSize = () => {return size;};
 exports.getTurn = () => {return turn;};
 exports.getScore = color => {return score.get(color);};
 exports.getBoards = color => {
-/*	if (state === 'blueprep' || state === 'redprep') {
-		if (color === 'blue')
-			return {blue: board['blue'], red: []};
+	if (state === 'prep') {
+		if (color)
+			return {blue: [], red: board[1]};
 		else
-			return {blue: [], red: board['red']};
+			return {blue: board[0], red: []};
 	}
-*/	return {blue: board[0], red: board[1]};
+	return {blue: board[0], red: board[1]};
 };
 
 /**
