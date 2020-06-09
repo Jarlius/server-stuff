@@ -54,6 +54,10 @@ Vue.component('route-battleship', {
 			this.state = data.state;
 			this.player = data.player;
 			this.turn = data.turn;
+		});
+		this.socket.on('click-color', data => {
+			console.log(data.tiles);
+			this.score = data.score;
 			for (var i in data.tiles) {
 				// Using Vue.set forces all state updates, only way to trigger arrays
 				Vue.set(
@@ -62,9 +66,6 @@ Vue.component('route-battleship', {
 					data.tiles[i].color
 				);
 			}
-		});
-		this.socket.on('click-color', data => {
-			this.score = data.score;
 		});
 		fetch(`/api/state/${this.color}`)
 			.then(res => res.json())
