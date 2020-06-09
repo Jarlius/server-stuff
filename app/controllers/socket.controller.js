@@ -1,5 +1,13 @@
 const model = require('../model.js');
 
+const sendAll = io => {
+	io.to('').emit('state', {
+		state: model.getState().state,
+		player: model.getState().player,
+		turn: model.getTurn(),
+	});
+};
+
 module.exports = (socket, io) => {
 
 	socket.on('created', req => {
@@ -14,11 +22,7 @@ module.exports = (socket, io) => {
 		const color = model.colorToNumber(req.color);
 		model.controlButton(color);
 		
-		io.to('').emit('control-all', {
-			state: model.getState().state,
-			player: model.getState().player,
-			turn: model.getTurn(),
-		});
+		sendAll(io);
 		io.to(color).emit('control-color', {
 			score: model.getScore(color),
 			boards: model.getBoards(color)
@@ -35,11 +39,7 @@ module.exports = (socket, io) => {
 		const color = model.colorToNumber(req.color);
 		const tiles = model.tileClick(req.number,color);
 		
-		io.to('').emit('click-all', {
-			state: model.getState().state,
-			player: model.getState().player,
-			turn: model.getTurn(),
-		});
+		sendAll(io);
 		io.to(color).emit('click-color', {
 			score: model.getScore(color),
 			tiles: tiles[color]

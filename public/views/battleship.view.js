@@ -41,7 +41,7 @@ Vue.component('route-battleship', {
 	},
 	created() {
 		this.socket = io().connect();
-		this.socket.on('control-all', data => {
+		this.socket.on('state', data => {
 			this.state = data.state;
 			this.player = data.player;
 			this.turn = data.turn;
@@ -49,11 +49,6 @@ Vue.component('route-battleship', {
 		this.socket.on('control-color', data => {
 			this.score = data.score;
 			this.boards = data.boards;
-		});
-		this.socket.on('click-all', data => {
-			this.state = data.state;
-			this.player = data.player;
-			this.turn = data.turn;
 		});
 		this.socket.on('click-color', data => {
 			console.log(data.tiles);
