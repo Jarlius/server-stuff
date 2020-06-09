@@ -93,13 +93,13 @@ exports.controlButton = color => {
 		board[0] = Array(size*size).fill(0);
 		break;
 	case 'blueprep':
-		if (color !== 'blue' || !score.isZero(0))
+		if (color !== 0 || !score.isZero(0))
 			return;
 		board[0] = Array(size*size).fill(0);
 		board[1] = Array(size*size).fill(0);
 		break;
 	case 'redprep':
-		if (color !== 'red' || !score.isZero(1))
+		if (color !== 1 || !score.isZero(1))
 			return;
 		board[1] = Array(size*size).fill(0);
 		turn = 1;

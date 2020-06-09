@@ -12,7 +12,7 @@ module.exports = (socket, io) => {
 		console.log('control', req.color);
 		
 		const color = model.colorToNumber(req.color);
-		model.controlButton(req.color);
+		model.controlButton(color);
 		
 		io.to('').emit('control-all', {
 			state: model.getState(),
