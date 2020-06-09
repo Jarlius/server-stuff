@@ -29,7 +29,26 @@ exports.colorToNumber = colorToNumber;
 /**
  * Read only get functions for model variables
  */
-exports.getState = () => {return state.get();};
+exports.getState = () => {
+	var cur = state.get();
+	switch (cur.state) {
+	case 'prep':
+		cur.state = cur.color ? 'redprep' : 'blueprep';
+		break;
+	case 'turnplay':
+		cur.state = cur.color ? 'redturn' : 'blueturn';
+		break;
+	case 'turnend':
+		cur.state = cur.color ? 'redend' : 'blueend';
+		break;
+	case 'gameover':
+		cur.state = cur.color ? 'redwin' : 'bluewin';
+		break;
+	default:
+		break;
+	}
+	return cur.state;
+};
 exports.getSize = () => {return size;};
 exports.getTurn = () => {return turn;};
 exports.getScore = color => {return score.get(color);};
@@ -48,24 +67,21 @@ exports.getBoards = color => {
  * Initialises arrays and changes states
  */
 exports.controlButton = color => {
-	switch (state.get()) {
+	const cur = state.get();
+	switch (cur.state) {
 	case 'start':
 		turn = 0;
 		score.reset(ship_specs,[0,1]);
 		ships.reset([0,1]);
 		board[0] = Array(size*size).fill(0);
-		break;
-	case 'blueprep':
-		if (color !== 0 || !score.isZero(0))
-			return;
-		board[0] = Array(size*size).fill(0);
 		board[1] = Array(size*size).fill(0);
 		break;
-	case 'redprep':
-		if (color !== 1 || !score.isZero(1))
+	case 'prep':
+		if (color !== cur.color || !score.isZero(color))
 			return;
-		board[1] = Array(size*size).fill(0);
-		turn = 1;
+		board[color] = Array(size*size).fill(0);
+		if (color)
+			turn = 1;
 		break;
 	default:
 		break;
@@ -145,7 +161,7 @@ const takeTurn = (number,color) => {
 		if (iterateLine(ship.c1,ship.c2,color,2,false)) {
 			if (ships.delShip(ship,+!color)) {
 				// trigger end of game
-				state.win(color);
+				state.gameover();
 				return [];
 			}
 			score.edit(color, ship.size, 1);
@@ -163,12 +179,15 @@ const takeTurn = (number,color) => {
  */
 exports.tileClick = tile => {
 	const color = colorToNumber(tile.color);
-	if (state.get() === tile.color + 'prep')
+	const cur = state.get();
+	if (cur.color !== color)
+		;// do nothing
+	else if (cur.state === 'prep')
 		return prepare(tile.number,color);
-	else if (state.get() === tile.color + 'turn')
+	else if (cur.state === 'turnplay')
 		return takeTurn(tile.number,color);
-	else if (state.get() === tile.color + 'end') {
-		if (tile.color === 'red')
+	else if (cur.state === 'turnend') {
+		if (color)
 			turn++;
 		state.next();
 	}

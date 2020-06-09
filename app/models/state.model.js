@@ -1,10 +1,11 @@
 var state = 'start';
+var color = 0;
 
 /**
  * Read-only copy
  */
 exports.get = () => {
-	return state;
+	return {state: state, color: color};
 };
 
 /**
@@ -13,30 +14,22 @@ exports.get = () => {
 exports.next = () => {
 	switch (state) {
 	case 'start':
-		state = 'blueprep';
+		state = 'prep';
+		color = 0;
 		break;
-	case 'blueprep':
-		state = 'redprep';
+	case 'prep':
+		if (color)
+			state = 'turnplay';
+		color = +!color;
 		break;
-	case 'redprep':
-		state = 'blueturn';
+	case 'turnplay':
+		state = 'turnend';
 		break;
-	case 'blueturn':
-		state = 'blueend';
+	case 'turnend':
+		state = 'turnplay';
+		color = +!color;
 		break;
-	case 'blueend':
-		state = 'redturn';
-		break;
-	case 'redturn':
-		state = 'redend';
-		break;
-	case 'redend':
-		state = 'blueturn';
-		break;
-	case 'bluewin':
-		state = 'start';
-		break;
-	case 'redwin':
+	case 'gameover':
 		state = 'start';
 		break;
 	default:
@@ -46,11 +39,8 @@ exports.next = () => {
 };
 
 /**
- * Force the state into a win state
+ * Force the state into a gameover state
  */
-exports.win = color => {
-	if (color)
-		state = 'redwin';
-	else
-		state = 'bluewin';
+exports.win = () => {
+	state = 'gameover';
 };
