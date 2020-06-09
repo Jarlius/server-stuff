@@ -7,6 +7,7 @@ Vue.component('route-battleship', {
 			score: [],
 			turn: 0,
 			state: '',
+			player: 0,
 			boards: [],
 		}
 	},
@@ -18,25 +19,11 @@ Vue.component('route-battleship', {
 			this.socket.emit('control', {color: this.color});
 		},
 		currentBoard() {
-			switch (this.state) {
-			case 'blueprep':
-				if (this.color === 'blue')
-					return 'blue';
-				break;
-			case 'redprep':
-				if (this.color === 'red')
-					return 'red';
-				break;
-			case 'blueturn':
-				return 'blue';
-			case 'blueend':
-				return 'blue';
-			case 'redturn':
+			if (this.state === 'start')
+				return 'none';
+			if (this.player)
 				return 'red';
-			case 'redend':
-				return 'red';
-			}
-			return 'none';
+			return 'blue';
 		},
 		tileColor(number) {
 			switch(this.boards[this.currentBoard()][number-1]) {
@@ -56,6 +43,7 @@ Vue.component('route-battleship', {
 		this.socket = io().connect();
 		this.socket.on('control-all', data => {
 			this.state = data.state;
+			this.player = data.player;
 			this.turn = data.turn;
 			this.boards = data.boards;
 		});
@@ -64,6 +52,7 @@ Vue.component('route-battleship', {
 		});
 		this.socket.on('click-all', data => {
 			this.state = data.state;
+			this.player = data.player;
 			this.turn = data.turn;
 			for (var i in data.tiles) {
 				// Using Vue.set forces all state updates, only way to trigger arrays
@@ -81,6 +70,7 @@ Vue.component('route-battleship', {
 			.then(res => res.json())
 			.then(data => {
 				this.state = data.state;
+				this.player = data.player;
 				this.turn = data.turn;
 				this.size = data.size;
 				this.score = data.score;
@@ -117,7 +107,7 @@ Vue.component('route-battleship', {
 			<button v-if="state === 'start'" v-on:click="controlButton()">
 				Start game
 			</button>
-			<button v-if="state === currentBoard() + 'prep'" v-on:click="controlButton()">
+			<button v-if="state === 'prep'" v-on:click="controlButton()">
 				End preparation
 			</button>
 			<div v-if="state === 'bluewin' || state === 'redwin'">

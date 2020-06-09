@@ -29,26 +29,7 @@ exports.colorToNumber = colorToNumber;
 /**
  * Read only get functions for model variables
  */
-exports.getState = () => {
-	var cur = state.get();
-	switch (cur.state) {
-	case 'prep':
-		cur.state = cur.color ? 'redprep' : 'blueprep';
-		break;
-	case 'turnplay':
-		cur.state = cur.color ? 'redturn' : 'blueturn';
-		break;
-	case 'turnend':
-		cur.state = cur.color ? 'redend' : 'blueend';
-		break;
-	case 'gameover':
-		cur.state = cur.color ? 'redwin' : 'bluewin';
-		break;
-	default:
-		break;
-	}
-	return cur.state;
-};
+exports.getState = () => {return state.get();};
 exports.getSize = () => {return size;};
 exports.getTurn = () => {return turn;};
 exports.getScore = color => {return score.get(color);};
