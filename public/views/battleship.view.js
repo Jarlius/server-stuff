@@ -48,7 +48,7 @@ Vue.component('route-battleship', {
 		});
 		this.socket.on('control-color', data => {
 			this.score = data.score;
-			this.boards = data.boards;
+			this.boards = data.tiles;
 		});
 		this.socket.on('click-color', data => {
 			console.log(data.tiles);

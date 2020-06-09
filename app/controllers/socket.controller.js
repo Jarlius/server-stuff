@@ -25,11 +25,11 @@ module.exports = (socket, io) => {
 		sendAll(io);
 		io.to(color).emit('control-color', {
 			score: model.getScore(color),
-			boards: model.getBoards(color)
+			tiles: model.getBoards(color)
 		});
 		io.to(+!color).emit('control-color', {
 			score: model.getScore(+!color),
-			boards: model.getBoards(+!color)
+			tiles: model.getBoards(+!color)
 		});
 	});
 	
