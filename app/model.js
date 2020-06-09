@@ -161,16 +161,20 @@ const takeTurn = (number,color) => {
 exports.tileClick = tile => {
 	const color = colorToNumber(tile.color);
 	const cur = state.get();
+	var arr = [[],[]];
 	if (color !== cur.player)
 		;// do nothing
 	else if (cur.state === 'prep')
-		return prepare(tile.number,color);
-	else if (cur.state === 'turnplay')
-		return takeTurn(tile.number,color);
+		arr[cur.player] = prepare(tile.number,color);
+	else if (cur.state === 'turnplay') {
+		const tiles = takeTurn(tile.number,color);
+		arr[0] = tiles;
+		arr[1] = tiles;
+	}
 	else if (cur.state === 'turnend') {
 		if (color)
 			turn++;
 		state.next();
 	}
-	return [];
+	return arr;
 };

@@ -35,7 +35,7 @@ module.exports = (socket, io) => {
 			state: model.getState().state,
 			player: model.getState().player,
 			turn: model.getTurn(),
-			tiles: tiles
+			tiles: tiles[color]
 		});
 		io.to(req.color).emit('click-color', {
 			score: model.getScore(color),
