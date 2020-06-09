@@ -21,10 +21,9 @@ colors['red'] = 1;
 /**
  * Convert frontend's color string into integer
  */
-const colorToNumber = color => {
+exports.colorToNumber = color => {
 	return colors[color];
 };
-exports.colorToNumber = colorToNumber;
 
 /**
  * Read only get functions for model variables
@@ -159,16 +158,15 @@ const takeTurn = (number,color) => {
  * Flow control for a tile click
  * Prevents a player's actions when it's not their turn
  */
-exports.tileClick = tile => {
-	const color = colorToNumber(tile.color);
+exports.tileClick = (number,color) => {
 	const cur = state.get();
 	var arr = [[],[]];
 	if (color !== cur.player)
 		;// do nothing
 	else if (cur.state === 'prep')
-		arr[cur.player] = prepare(tile.number,color);
+		arr[cur.player] = prepare(number,color);
 	else if (cur.state === 'turnplay') {
-		const tiles = takeTurn(tile.number,color);
+		const tiles = takeTurn(number,color);
 		arr[0] = tiles;
 		arr[1] = tiles;
 	}

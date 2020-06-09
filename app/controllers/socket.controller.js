@@ -33,7 +33,7 @@ module.exports = (socket, io) => {
 		console.log('click', req.number, req.color);
 		
 		const color = model.colorToNumber(req.color);
-		const tiles = model.tileClick(req);
+		const tiles = model.tileClick(req.number,color);
 		
 		io.to('').emit('click-all', {
 			state: model.getState().state,
