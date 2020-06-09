@@ -3,11 +3,11 @@ const Ship = require('./models/ship.model.js');
 
 const ships = require('./models/ships.model.js');
 const score = require('./models/score.model.js');
+const state = require('./models/state.model.js');
 
 const size = 9;
 const ship_specs = [[2,1],[3,2],[4,1],[5,1]];
 
-var state = 'start';
 var turn = 0;
 
 var board = [[],[]];
@@ -29,7 +29,7 @@ exports.colorToNumber = colorToNumber;
 /**
  * Read only get functions for model variables
  */
-exports.getState = () => {return state;};
+exports.getState = () => {return state.get();};
 exports.getSize = () => {return size;};
 exports.getTurn = () => {return turn;};
 exports.getScore = color => {return score.get(color);};
@@ -44,49 +44,11 @@ exports.getBoards = color => {
 };
 
 /**
- * Change the program state into its next state
- */
-const nextState = () => {
-	switch (state) {
-	case 'start':
-		state = 'blueprep';
-		break;
-	case 'blueprep':
-		state = 'redprep';
-		break;
-	case 'redprep':
-		state = 'blueturn';
-		break;
-	case 'blueturn':
-		state = 'blueend';
-		break;
-	case 'blueend':
-		state = 'redturn';
-		break;
-	case 'redturn':
-		state = 'redend';
-		break;
-	case 'redend':
-		state = 'blueturn';
-		break;
-	case 'bluewin':
-		state = 'start';
-		break;
-	case 'redwin':
-		state = 'start';
-		break;
-	default:
-		break;
-	}
-	return state;
-};
-
-/**
  * Control flow for a button press
  * Initialises arrays and changes states
  */
 exports.controlButton = color => {
-	switch (state) {
+	switch (state.get()) {
 	case 'start':
 		turn = 0;
 		score.reset(ship_specs,[0,1]);
@@ -108,7 +70,7 @@ exports.controlButton = color => {
 	default:
 		break;
 	}
-	nextState();
+	state.next();
 };
 
 /**
@@ -173,7 +135,7 @@ const prepare = (number,color) => {
 const takeTurn = (number,color) => {
 	if (board[color][number] !== 0)
 		return [];
-	nextState();
+	state.next();
 
 	const move = new Coordinate(number,size);
 	const ship = ships.badShip(new Ship(move,move),+!color);
@@ -183,10 +145,7 @@ const takeTurn = (number,color) => {
 		if (iterateLine(ship.c1,ship.c2,color,2,false)) {
 			if (ships.delShip(ship,+!color)) {
 				// trigger end of game
-				if (color)
-					state = 'redwin';
-				else
-					state = 'bluewin';
+				state.win(color);
 				return [];
 			}
 			score.edit(color, ship.size, 1);
@@ -204,14 +163,14 @@ const takeTurn = (number,color) => {
  */
 exports.tileClick = tile => {
 	const color = colorToNumber(tile.color);
-	if (state === tile.color + 'prep')
+	if (state.get() === tile.color + 'prep')
 		return prepare(tile.number,color);
-	else if (state === tile.color + 'turn')
+	else if (state.get() === tile.color + 'turn')
 		return takeTurn(tile.number,color);
-	else if (state === tile.color + 'end') {
+	else if (state.get() === tile.color + 'end') {
 		if (tile.color === 'red')
 			turn++;
-		nextState();
+		state.next();
 	}
 	return [];
 };
