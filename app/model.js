@@ -24,7 +24,7 @@ colors['red'] = 1;
 exports.getState = () => {return state;};
 exports.getSize = () => {return size;};
 exports.getTurn = () => {return turn;};
-exports.getScore = color => {return score.get(color);};
+exports.getScore = color => {return score.get(colors[color]);};
 exports.getBoards = color => {
 /*	if (state === 'blueprep' || state === 'redprep') {
 		if (color === 'blue')
@@ -81,18 +81,18 @@ exports.controlButton = color => {
 	switch (state) {
 	case 'start':
 		turn = 0;
-		score.reset(ship_specs,['blue','red']);
-		ships.reset(['blue','red']);
+		score.reset(ship_specs,[0,1]);
+		ships.reset([0,1]);
 		board[0] = Array(size*size).fill(0);
 		break;
 	case 'blueprep':
-		if (color !== 'blue' || !score.isZero('blue'))
+		if (color !== 'blue' || !score.isZero(0))
 			return;
 		board[0] = Array(size*size).fill(0);
 		board[1] = Array(size*size).fill(0);
 		break;
 	case 'redprep':
-		if (color !== 'red' || !score.isZero('red'))
+		if (color !== 'red' || !score.isZero(1))
 			return;
 		board[1] = Array(size*size).fill(0);
 		turn = 1;
@@ -133,22 +133,22 @@ const iterateLine = (c1,c2,color,other_color,assigning) => {
 const prepare = tile => {
 	const move = new Coordinate(tile.number,size);
 	if (last_move === null) {
-		const ship = ships.badShip(new Ship(move,move),tile.color);
+		const ship = ships.badShip(new Ship(move,move),colors[tile.color]);
 		if (!ship) {
 			last_move = move;
 			board[colors[tile.color]][tile.number] = 1;
 			return [{number: tile.number, color: 1}];
 		} else {
-			ships.delShip(ship,tile.color);
-			score.edit(tile.color, ship.size, 1);
+			ships.delShip(ship,colors[tile.color]);
+			score.edit(colors[tile.color], ship.size, 1);
 			return iterateLine(ship.c1,ship.c2,tile.color,0,true);
 		}
 	} else {
 		const tmp_move = last_move;
 		last_move = null;
 		const new_ship = new Ship(move,tmp_move);
-		if (!ships.badShip(new_ship,tile.color) && score.edit(tile.color, new_ship.size, -1)) {
-			ships.addShip(new_ship,tile.color)
+		if (!ships.badShip(new_ship,colors[tile.color]) && score.edit(colors[tile.color], new_ship.size, -1)) {
+			ships.addShip(new_ship,colors[tile.color])
 			return iterateLine(move,tmp_move,tile.color,3,true);
 		} else {
 			board[colors[tile.color]][tmp_move.row*size + tmp_move.col] = 0;
@@ -169,17 +169,17 @@ const takeTurn = tile => {
 
 	const other_color = tile.color === 'blue' ? 'red' : 'blue';
 	const move = new Coordinate(tile.number,size);
-	const ship = ships.badShip(new Ship(move,move),other_color);
+	const ship = ships.badShip(new Ship(move,move),colors[other_color]);
 	
 	if (ship) {
 		board[colors[tile.color]][tile.number] = 2;
 		if (iterateLine(ship.c1,ship.c2,tile.color,2,false)) {
-			if (ships.delShip(ship,other_color)) {
+			if (ships.delShip(ship,colors[other_color])) {
 				// trigger end of game
 				state = tile.color + 'win';
 				return [];
 			}
-			score.edit(tile.color, ship.size, 1);
+			score.edit(colors[tile.color], ship.size, 1);
 			return iterateLine(ship.c1,ship.c2,tile.color,3,true);
 		}
 		return [{number: tile.number, color: 2}];
