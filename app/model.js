@@ -170,30 +170,33 @@ const prepare = (number,color) => {
  * Already guessed tiles are ignored, misses turn green and hits turn orange.
  * If a hit sinks a ship, the whole ship turns black and the player's score increases
  */
-const takeTurn = tile => {
-	if (board[colors[tile.color]][tile.number] !== 0)
+const takeTurn = (number,color) => {
+	if (board[color][number] !== 0)
 		return [];
 	nextState();
 
-	const other_color = tile.color === 'blue' ? 'red' : 'blue';
-	const move = new Coordinate(tile.number,size);
-	const ship = ships.badShip(new Ship(move,move),colors[other_color]);
+	const other_color = (color == '0' ? '1' : '0');
+	const move = new Coordinate(number,size);
+	const ship = ships.badShip(new Ship(move,move),other_color);
 	
 	if (ship) {
-		board[colors[tile.color]][tile.number] = 2;
-		if (iterateLine(ship.c1,ship.c2,colorToNumber(tile.color),2,false)) {
-			if (ships.delShip(ship,colors[other_color])) {
+		board[color][number] = 2;
+		if (iterateLine(ship.c1,ship.c2,color,2,false)) {
+			if (ships.delShip(ship,other_color)) {
 				// trigger end of game
-				state = tile.color + 'win';
+				if (color)
+					state = 'redwin';
+				else
+					state = 'bluewin';
 				return [];
 			}
-			score.edit(colors[tile.color], ship.size, 1);
-			return iterateLine(ship.c1,ship.c2,colorToNumber(tile.color),3,true);
+			score.edit(color, ship.size, 1);
+			return iterateLine(ship.c1,ship.c2,color,3,true);
 		}
-		return [{number: tile.number, color: 2}];
+		return [{number: number, color: 2}];
 	}
-	board[colors[tile.color]][tile.number] = 1;
-	return [{number: tile.number, color: 1}];
+	board[color][number] = 1;
+	return [{number: number, color: 1}];
 };
 
 /**
@@ -205,7 +208,7 @@ exports.tileClick = tile => {
 	if (state === tile.color + 'prep')
 		return prepare(tile.number,color);
 	else if (state === tile.color + 'turn')
-		return takeTurn(tile);
+		return takeTurn(tile.number,color);
 	else if (state === tile.color + 'end') {
 		if (tile.color === 'red')
 			turn++;
