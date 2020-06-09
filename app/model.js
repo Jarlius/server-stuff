@@ -16,6 +16,10 @@ board['red'] = [];
 
 var last_move = null;
 
+var colors = [];
+colors['blue'] = 0;
+colors['red'] = 1;
+
 /**
  * Read only get functions for model variables
  */
