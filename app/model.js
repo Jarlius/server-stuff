@@ -140,11 +140,9 @@ const takeTurn = (number,color) => {
 	if (ship) {
 		board[color][number] = 2;
 		if (iterateLine(ship.c1,ship.c2,color,2,false)) {
-			if (ships.delShip(ship,+!color)) {
+			if (ships.delShip(ship,+!color))
 				// trigger end of game
 				state.gameover();
-				return [];
-			}
 			score.edit(color, ship.size, 1);
 			return iterateLine(ship.c1,ship.c2,color,3,true);
 		}
