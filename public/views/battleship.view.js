@@ -8,7 +8,7 @@ Vue.component('route-battleship', {
 			turn: 0,
 			state: '',
 			player: 0,
-			boards: [],
+			boards: [[],[]],
 		}
 	},
 	methods: {
@@ -87,7 +87,7 @@ Vue.component('route-battleship', {
 			<h1>Battleship!</h1>
 			<h2>{{ color }} player</h2>
 			<div
-				v-if="currentBoard() !== 'none'"
+				v-if="boards[player].length !== 0"
 				:class="'grid-container gameboard ' + currentBoard()"
 				:style="'grid-template-columns: repeat(' + size + ', auto);'"
 			>
