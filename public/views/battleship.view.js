@@ -81,7 +81,7 @@ Vue.component('route-battleship', {
 			<br>
 			Turn: <span id="turn" class="data">{{ turn }}</span>
 		</div>
-		<div class="grid-item" :id="color + '-background'">
+		<div :class="'grid-item background ' + color">
 			<h1>Battleship!</h1>
 			<h2>{{ color }} player</h2>
 			<div

@@ -21,15 +21,15 @@ div.grid-container.gameboard.red {
 	background-color: #ff5050;
 }
 
-#blue-background {
-	background-color: powderblue;
+div.grid-item.background {
 	text-align: center;
 	width: 100%;
 }
-#red-background {
+div.grid-item.background.blue {
+	background-color: powderblue;
+}
+div.grid-item.background.red {
 	background-color: powderred;
-	text-align: center;
-	width: 100%;
 }
 
 .tile {
