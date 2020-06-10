@@ -26,7 +26,7 @@ Vue.component('route-battleship', {
 			return 'blue';
 		},
 		tileColor(number) {
-			switch(this.boards[this.currentBoard()][number-1]) {
+			switch(this.boards[this.player][number-1]) {
 			case 0:
 				return 'beige';
 			case 1:
@@ -51,12 +51,11 @@ Vue.component('route-battleship', {
 			this.boards = data.tiles;
 		});
 		this.socket.on('click', data => {
-			console.log(data.tiles);
 			this.score = data.score;
 			for (var i in data.tiles) {
 				// Using Vue.set forces all state updates, only way to trigger arrays
 				Vue.set(
-					this.boards[this.currentBoard()],
+					this.boards[this.player],
 					data.tiles[i].number,
 					data.tiles[i].color
 				);

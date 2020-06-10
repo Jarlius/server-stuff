@@ -36,11 +36,11 @@ exports.getBoards = color => {
 	const cur = state.get();
 	if (cur.state === 'prep') {
 		if (color)
-			return {blue: [], red: board[1]};
+			return [[], board[1]];
 		else
-			return {blue: board[0], red: []};
+			return [board[0], []];
 	}
-	return {blue: board[0], red: board[1]};
+	return board;
 };
 
 /**
