@@ -41,6 +41,6 @@ exports.next = () => {
 /**
  * Force the state into a gameover state
  */
-exports.win = () => {
+exports.gameover = () => {
 	state = 'gameover';
 };
