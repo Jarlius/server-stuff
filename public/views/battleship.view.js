@@ -98,22 +98,21 @@ Vue.component('route-battleship', {
 				</div>
 			</div>
 			<div v-if="state === 'gameover'">
+				<br>
 				Player {{ boardColor() }} wins!!!
 			</div>
-			<button
-				v-if="state === 'start' || state === 'prep' || state === 'gameover'"
-				v-on:click="controlButton()"
-			>
-				<div v-if="state === 'start'">
+			<div v-if="state === 'start' || state === 'prep' || state === 'gameover'">
+				<br>
+				<button v-if="state === 'start'" v-on:click="controlButton()">
 					Start game
-				</div>
-				<div v-if="state === 'prep'">
+				</button>
+				<button v-if="state === 'prep'" v-on:click="controlButton()">
 					End preparation
-				</div>
-				<div v-if="state === 'gameover'">
+				</button>
+				<button v-if="state === 'gameover'" v-on:click="controlButton()">
 					Quit
-				</div>
-			</button>
+				</button>
+			</div>
 		</div>
 	</div>`
 });
