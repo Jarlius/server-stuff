@@ -18,9 +18,7 @@ Vue.component('route-battleship', {
 		controlButton() {
 			this.socket.emit('control', {color: this.color});
 		},
-		currentBoard() {
-			if (this.state === 'start')
-				return 'none';
+		boardColor() {
 			if (this.player)
 				return 'red';
 			return 'blue';
@@ -88,7 +86,7 @@ Vue.component('route-battleship', {
 			<h2>{{ color }} player</h2>
 			<div
 				v-if="boards[player].length !== 0"
-				:class="'grid-container gameboard ' + currentBoard()"
+				:class="'grid-container gameboard ' + boardColor()"
 				:style="'grid-template-columns: repeat(' + size + ', auto);'"
 			>
 				<div v-for="n in size*size">
@@ -99,17 +97,23 @@ Vue.component('route-battleship', {
 					</div>
 				</div>
 			</div>
-			<button v-if="state === 'start'" v-on:click="controlButton()">
-				Start game
-			</button>
-			<button v-if="state === 'prep'" v-on:click="controlButton()">
-				End preparation
-			</button>
-			<div v-if="state === 'bluewin' || state === 'redwin'">
-				<button v-on:click="controlButton()">
-					Quit
-				</button>
+			<div v-if="state === 'gameover'">
+				Player {{ boardColor() }} wins!!!
 			</div>
+			<button
+				v-if="state === 'start' || state === 'prep' || state === 'gameover'"
+				v-on:click="controlButton()"
+			>
+				<div v-if="state === 'start'">
+					Start game
+				</div>
+				<div v-if="state === 'prep'">
+					End preparation
+				</div>
+				<div v-if="state === 'gameover'">
+					Quit
+				</div>
+			</button>
 		</div>
 	</div>`
 });
