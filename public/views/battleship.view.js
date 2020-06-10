@@ -81,7 +81,10 @@ Vue.component('route-battleship', {
 			<br>
 			Turn: <span id="turn" class="data">{{ turn }}</span>
 		</div>
-		<div :class="'grid-item background ' + color">
+		<div
+			:class="'grid-item background ' + color"
+			:id="state === 'gameover' ? 'flash' : ''"
+		>
 			<h1>Battleship!</h1>
 			<h2>{{ color }} player</h2>
 			<div

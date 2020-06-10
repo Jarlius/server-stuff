@@ -63,3 +63,15 @@ span.data {
 	padding: 5px;
 	display: inline;
 }
+
+#flash {
+	animation: flash 0.5s infinite;
+}
+@keyframes flash {
+	0%	{background-color:red;}
+	25%	{background-color:yellow;}
+	50%	{background-color:blue;}
+	75%	{background-color:green;}
+	100%	{background-color:red;}
+}
+
