@@ -3,9 +3,13 @@ const setupBoilerplate = require('./boilerplate/setup.js');
 const { app, io, listen } = setupBoilerplate();
 const port = 8989;
 
+// use /.well-known for acme-challenge resources
+const wellknownrouter = require('./controllers/wellknown.controller.js');
+app.use('/.well-known', wellknownrouter);
+
 // use /api for REST router, to not interfere with regular urls (may be changed)
-const router = require('./controllers/api/rest.controller.js');
-app.use('/api', router);
+const apirouter = require('./controllers/api/rest.controller.js');
+app.use('/api', apirouter);
 
 // Pair up socket controller with the socket io url
 const socketController = require('./controllers/api/socket.controller.js');
