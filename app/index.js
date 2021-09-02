@@ -1,7 +1,7 @@
 const setupBoilerplate = require('./boilerplate/setup.js');
 
 const { app, io, listen } = setupBoilerplate();
-const port = 8989;
+const port = 80;
 
 // use /.well-known for acme-challenge resources
 const wellknownrouter = require('./controllers/wellknown.controller.js');
